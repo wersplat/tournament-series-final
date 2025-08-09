@@ -43,7 +43,7 @@ export const getPlayers = cache(async (): Promise<Player[]> => {
       { id: 'p2', gamertag: 'Vex', team_id: 't2' },
     ]
   }
-  const { data, error } = await client.from('players').select('id, gamertag, position, current_team_id, avatar_url, bio, created_at')
+  const { data, error } = await client.from('players').select('id, gamertag, position, current_team_id, created_at')
   if (error) throw error
   // Map current_team_id -> team_id for UI compatibility
   return (data || []).map((p: any) => ({
@@ -51,8 +51,8 @@ export const getPlayers = cache(async (): Promise<Player[]> => {
     gamertag: p.gamertag as string,
     team_id: (p.current_team_id as UUID) ?? null,
     role: p.position ?? null,
-    avatar_url: p.avatar_url ?? null,
-    bio: p.bio ?? null,
+    avatar_url: null,
+    bio: null,
     created_at: p.created_at ?? undefined,
   })) as Player[]
 })

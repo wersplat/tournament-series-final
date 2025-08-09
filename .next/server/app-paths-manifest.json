@@ -1,1 +1,7 @@
-{}
+{
+  "/(public)/schedule/page": "app/(public)/schedule/page.js",
+  "/(public)/teams/[id]/page": "app/(public)/teams/[id]/page.js",
+  "/(public)/rankings/page": "app/(public)/rankings/page.js",
+  "/(public)/page": "app/(public)/page.js",
+  "/(public)/players/page": "app/(public)/players/page.js"
+}
