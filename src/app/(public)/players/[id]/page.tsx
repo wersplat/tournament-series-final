@@ -5,8 +5,14 @@ import { XboxProfile } from '@/components/profile/XboxProfile'
 export default async function PlayerProfilePage({ params }: { params: { id: string } }) {
   const bundle = await getPlayerProfile(params.id)
   if (!bundle.player) return <div>Player not found</div>
-  // Basic averages derived from available match data in this mock; can be replaced with player_stats view later
-  const averages = { points: 0, assists: 0, rebounds: 0, steals: 0 }
+  const averages = bundle.performance
+    ? {
+        points: Number(bundle.performance.avg_points ?? 0),
+        assists: Number(bundle.performance.avg_assists ?? 0),
+        rebounds: Number(bundle.performance.avg_rebounds ?? 0),
+        steals: Number(bundle.performance.avg_steals ?? 0),
+      }
+    : { points: 0, assists: 0, rebounds: 0, steals: 0 }
   return (
     <div className="space-y-4">
       <div className="grid gap-4 lg:grid-cols-2">

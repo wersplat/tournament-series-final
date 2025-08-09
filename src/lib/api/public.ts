@@ -122,9 +122,21 @@ export const getTeamProfile = cache(async (id: string) => {
 })
 
 export const getPlayerProfile = cache(async (id: string) => {
-  const [players, schedule] = await Promise.all([getPlayers(), getSchedule()])
-  const player = players.find((p) => p.id === id) || null
-  return { player, matches: schedule }
+  const client = await ensureClient()
+  // Base identity from players
+  const [playerRow, perf, schedule] = await Promise.all([
+    client
+      ? client.from('players').select('id, gamertag, position, current_team_id').eq('id', id).single()
+      : Promise.resolve({ data: null, error: null } as any),
+    client ? client.from('player_performance_view').select('*').eq('id', id).single() : Promise.resolve({ data: null } as any),
+    getSchedule(),
+  ])
+  const base = playerRow?.data
+  const player = base
+    ? ({ id: base.id, gamertag: base.gamertag, role: base.position ?? null, team_id: base.current_team_id ?? null } as any)
+    : null
+  const performance = perf?.data || null
+  return { player, matches: schedule, performance }
 })
 
 export async function queryGraphQL<T = unknown>(document: string, variables?: Record<string, unknown>) {
