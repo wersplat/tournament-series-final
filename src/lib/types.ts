@@ -43,6 +43,7 @@ export interface Event {
   end_date?: string | null
   location?: string | null
   bracket_url?: string | null
+  banner_url?: string | null
   notes?: string | null
 }
 

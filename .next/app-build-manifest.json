@@ -1,9 +1,9 @@
 {
   "pages": {
-    "/(public)/teams/page": [
+    "/(public)/schedule/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(public)/teams/page.js"
+      "static/chunks/app/(public)/schedule/page.js"
     ],
     "/(public)/error": [
       "static/chunks/webpack.js",
@@ -31,30 +31,15 @@
       "static/chunks/main-app.js",
       "static/chunks/app/_not-found/page.js"
     ],
-    "/(public)/schedule/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(public)/schedule/page.js"
-    ],
-    "/(public)/rankings/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(public)/rankings/page.js"
-    ],
-    "/(public)/teams/[id]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(public)/teams/[id]/page.js"
-    ],
     "/(public)/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(public)/page.js"
     ],
-    "/(public)/players/page": [
+    "/(public)/events/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(public)/players/page.js"
+      "static/chunks/app/(public)/events/page.js"
     ]
   }
 }

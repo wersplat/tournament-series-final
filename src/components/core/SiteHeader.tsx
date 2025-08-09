@@ -20,6 +20,7 @@ export default async function SiteHeader() {
           <nav className="hidden md:flex items-center gap-3 text-sm">
             <Link href="/schedule" className="hover:underline">Schedule</Link>
             <Link href="/rankings" className="hover:underline">Rankings</Link>
+            <Link href="/events" className="hover:underline">Events</Link>
             <Link href="/teams" className="hover:underline">Teams</Link>
             <Link href="/players" className="hover:underline">Players</Link>
             <Link href="/media" className="hover:underline">Media</Link>

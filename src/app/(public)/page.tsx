@@ -26,6 +26,7 @@ export default async function LandingPage() {
         {([
           { href: '/schedule', title: 'Schedule' },
           { href: '/rankings', title: 'Rankings' },
+          { href: '/events', title: 'Events' },
           { href: '/teams', title: 'Teams' },
           { href: '/players', title: 'Players' },
           { href: '/standings', title: 'Standings' },
