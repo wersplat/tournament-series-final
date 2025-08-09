@@ -13,10 +13,10 @@ export default async function LandingPage() {
         </h1>
         <p className="text-muted-foreground">Compete. Rank up. Make history.</p>
         <div className="flex items-center justify-center gap-3">
-          <Button asChild>
+          <Button asChild className="rounded-full px-6">
             <Link href="/login">Register / Login</Link>
           </Button>
-          <Button variant="outline" asChild>
+          <Button variant="outline" asChild className="rounded-full px-6">
             <Link href="/schedule">View Schedule</Link>
           </Button>
         </div>
