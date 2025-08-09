@@ -17,7 +17,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         {/* header */}
-        {/* @ts-expect-error Async Server Component */}
         <SiteHeader />
         <main id="content" className="container py-6">
           {children}

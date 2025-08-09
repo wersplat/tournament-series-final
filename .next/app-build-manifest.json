@@ -1,9 +1,14 @@
 {
   "pages": {
-    "/(public)/page": [
+    "/(public)/media/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(public)/page.js"
+      "static/chunks/app/(public)/media/page.js"
+    ],
+    "/(public)/media/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(public)/media/layout.js"
     ],
     "/(public)/error": [
       "static/chunks/webpack.js",
@@ -31,6 +36,11 @@
       "static/chunks/main-app.js",
       "static/chunks/app/_not-found/page.js"
     ],
+    "/(public)/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(public)/page.js"
+    ],
     "/(public)/schedule/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -51,15 +61,10 @@
       "static/chunks/main-app.js",
       "static/chunks/app/(public)/players/page.js"
     ],
-    "/(public)/media/page": [
+    "/(public)/login/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(public)/media/page.js"
-    ],
-    "/(public)/players/[id]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(public)/players/[id]/page.js"
+      "static/chunks/app/(public)/login/page.js"
     ]
   }
 }

@@ -2,7 +2,6 @@
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
-    typedRoutes: true,
     optimizePackageImports: [
       "lucide-react",
       "@radix-ui/react-dialog",
@@ -18,7 +17,6 @@ const nextConfig = {
     ]
   }
 }
-
 export default nextConfig
 
 

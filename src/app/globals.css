@@ -1,6 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer utilities {
+  .prose-base {
+    @apply prose prose-invert max-w-none;
+  }
+}
 
 /* Theme tokens via CSS variables: Xbox Dark (default) */
 :root {

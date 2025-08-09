@@ -11,7 +11,7 @@ export function SegmentedNav({ items }: { items: { label: string; href: string }
         return (
           <button
             key={it.href}
-            onClick={() => router.push(it.href)}
+            onClick={() => router.push(it.href as any)}
             className={
               'px-3 py-1.5 text-sm rounded-full transition-colors ' +
               (active

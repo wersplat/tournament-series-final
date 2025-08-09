@@ -1,7 +1,11 @@
 {
   "/(public)/page": "app/(public)/page.js",
-  "/(public)/media/page": "app/(public)/media/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
   "/(public)/schedule/page": "app/(public)/schedule/page.js",
   "/(public)/rankings/page": "app/(public)/rankings/page.js",
-  "/(public)/players/[id]/page": "app/(public)/players/[id]/page.js"
+  "/(public)/teams/page": "app/(public)/teams/page.js",
+  "/(public)/players/page": "app/(public)/players/page.js",
+  "/(public)/login/page": "app/(public)/login/page.js",
+  "/auth/signin/oauth/route": "app/auth/signin/oauth/route.js",
+  "/(public)/media/page": "app/(public)/media/page.js"
 }
