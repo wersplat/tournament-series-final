@@ -1,12 +1,12 @@
 import { requireAdmin } from '@/lib/auth'
-import { createEvent } from '@/lib/api/admin'
+import { insertEvent } from '@/lib/api/supabase-admin'
 
 export default async function AdminEventsPage() {
   const can = await requireAdmin()
   if (!can.ok) return null
   async function action(formData: FormData) {
     'use server'
-    await createEvent({
+    await insertEvent({
       name: String(formData.get('name') || ''),
       start_date: String(formData.get('start_date') || ''),
     })

@@ -22,9 +22,16 @@ export const getTeams = cache(async (): Promise<Team[]> => {
       { id: 't2', name: 'Shadow Wolves', logo_url: '/brand/logo.svg', conference: null, region: null },
     ]
   }
-  const { data, error } = await client.from('teams').select('id, name, logo_url, created_at')
+  const { data, error } = await client.from('teams').select('id, name, logo_url, region_id, created_at')
   if (error) throw error
-  return (data || []) as Team[]
+  return (data || []).map((t: any) => ({
+    id: t.id,
+    name: t.name,
+    logo_url: t.logo_url ?? null,
+    conference: null,
+    region: null, // could be resolved via regions table if needed
+    created_at: t.created_at ?? undefined,
+  })) as Team[]
 })
 
 // Players
@@ -36,13 +43,14 @@ export const getPlayers = cache(async (): Promise<Player[]> => {
       { id: 'p2', gamertag: 'Vex', team_id: 't2' },
     ]
   }
-  const { data, error } = await client.from('players').select('id, gamertag, current_team_id, avatar_url, bio, created_at')
+  const { data, error } = await client.from('players').select('id, gamertag, position, current_team_id, avatar_url, bio, created_at')
   if (error) throw error
   // Map current_team_id -> team_id for UI compatibility
   return (data || []).map((p: any) => ({
     id: p.id as UUID,
     gamertag: p.gamertag as string,
     team_id: (p.current_team_id as UUID) ?? null,
+    role: p.position ?? null,
     avatar_url: p.avatar_url ?? null,
     bio: p.bio ?? null,
     created_at: p.created_at ?? undefined,
