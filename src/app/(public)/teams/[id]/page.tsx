@@ -9,7 +9,7 @@ export default async function TeamProfilePage({ params }: { params: { id: string
   const supabase = createServerSupabase()
   const { data: pastMatches } = await supabase
     .from('matches')
-    .select('id, scheduled_at, team_a_id, team_b_id, score_a, score_b, winner_id, played_at')
+    .select('id, scheduled_at, team_a_id, team_b_id, team_a_name, team_b_name, score_a, score_b, winner_id, played_at')
     .or(`team_a_id.eq.${params.id},team_b_id.eq.${params.id}`)
     .order('played_at', { ascending: false })
     .limit(10)
@@ -56,7 +56,9 @@ export default async function TeamProfilePage({ params }: { params: { id: string
             <div className="font-medium mb-2">Recent Matches</div>
             <ul className="text-sm text-muted-foreground grid sm:grid-cols-2 gap-2">
               {bundle.matches.map((m) => (
-                <li key={m.id}>Match {m.id} — {new Date(m.scheduled_at).toLocaleString()}</li>
+                <li key={m.id}>
+                  {new Date(m.scheduled_at).toLocaleString()} — {m.home_team_name || 'Team A'} vs {m.away_team_name || 'Team B'}
+                </li>
               ))}
             </ul>
           </div>
@@ -68,7 +70,7 @@ export default async function TeamProfilePage({ params }: { params: { id: string
             <ul className="text-sm text-muted-foreground grid sm:grid-cols-2 gap-2">
               {(pastMatches || []).filter((m: any) => m.played_at).map((m: any) => (
                 <li key={m.id}>
-                  {new Date(m.played_at).toLocaleString()} — {m.score_a ?? 0}:{m.score_b ?? 0} {m.winner_id ? `(W: ${m.winner_id === params.id ? 'This Team' : 'Opponent'})` : ''}
+                  {new Date(m.played_at).toLocaleString()} — {m.team_a_name || 'Team A'} vs {m.team_b_name || 'Team B'} — {m.score_a ?? 0}:{m.score_b ?? 0} {m.winner_id ? `(W: ${m.winner_id === params.id ? 'This Team' : 'Opponent'})` : ''}
                 </li>
               ))}
             </ul>

@@ -75,7 +75,7 @@ export const getSchedule = cache(async (): Promise<Match[]> => {
   // Use upcoming_matches for schedule view (has scheduled_at + status)
   const { data, error } = await client
     .from('upcoming_matches')
-    .select('id, event_id, team_a_id, team_b_id, scheduled_at, status')
+    .select('id, event_id, team_a_id, team_b_id, scheduled_at, status, teams!upcoming_matches_team_a_id_fkey(name), teams_b:teams!upcoming_matches_team_b_id_fkey(name)')
     .order('scheduled_at', { ascending: true })
   if (error) throw error
   return (data || []).map((m: any) => ({
@@ -83,6 +83,8 @@ export const getSchedule = cache(async (): Promise<Match[]> => {
     event_id: m.event_id ?? null,
     home_team_id: m.team_a_id,
     away_team_id: m.team_b_id,
+    home_team_name: m.teams?.name ?? null,
+    away_team_name: m.teams_b?.name ?? null,
     scheduled_at: m.scheduled_at,
     status: (m.status === 'in_progress' || m.status === 'completed' || m.status === 'cancelled' || m.status === 'scheduled' || m.status === 'review') ? m.status : 'scheduled',
   })) as Match[]
@@ -114,10 +116,40 @@ export const getMedia = cache(async (): Promise<MediaItem[]> => {
 })
 
 export const getTeamProfile = cache(async (id: string) => {
-  const [teams, players, schedule] = await Promise.all([getTeams(), getPlayers(), getSchedule()])
-  const team = teams.find((t) => t.id === id) || null
-  const roster = players.filter((p) => p.team_id === id)
-  const matches = schedule.filter((m) => m.home_team_id === id || m.away_team_id === id)
+  const client = await ensureClient()
+  if (!client) {
+    const [teams, players, schedule] = await Promise.all([getTeams(), getPlayers(), getSchedule()])
+    const team = teams.find((t) => t.id === id) || null
+    const roster = players.filter((p) => p.team_id === id)
+    const matches = schedule.filter((m) => m.home_team_id === id || m.away_team_id === id)
+    return { team, players: roster, matches }
+  }
+
+  const [teamRes, rosterRes, upcoming] = await Promise.all([
+    client.from('teams').select('id, name, logo_url, region_id, created_at').eq('id', id).single(),
+    client.from('players').select('id, gamertag, position, current_team_id').eq('current_team_id', id),
+    client
+      .from('upcoming_matches')
+      .select('id, event_id, team_a_id, team_b_id, scheduled_at, status, teams!upcoming_matches_team_a_id_fkey(name), teams_b:teams!upcoming_matches_team_b_id_fkey(name)')
+      .or(`team_a_id.eq.${id},team_b_id.eq.${id}`)
+      .order('scheduled_at', { ascending: true }),
+  ])
+
+  const team = teamRes.data
+    ? ({ id: teamRes.data.id, name: teamRes.data.name, logo_url: teamRes.data.logo_url ?? null, region: null, conference: null, created_at: teamRes.data.created_at ?? undefined } as any)
+    : null
+  const roster = (rosterRes.data || []).map((p: any) => ({ id: p.id, gamertag: p.gamertag, role: p.position ?? null, team_id: p.current_team_id ?? null }))
+  const matches = (upcoming.data || []).map((m: any) => ({
+    id: m.id,
+    event_id: m.event_id ?? null,
+    home_team_id: m.team_a_id,
+    away_team_id: m.team_b_id,
+    home_team_name: m.teams?.name ?? null,
+    away_team_name: m.teams_b?.name ?? null,
+    scheduled_at: m.scheduled_at,
+    status: (m.status === 'in_progress' || m.status === 'completed' || m.status === 'cancelled' || m.status === 'scheduled' || m.status === 'review') ? m.status : 'scheduled',
+  })) as Match[]
+
   return { team, players: roster, matches }
 })
 

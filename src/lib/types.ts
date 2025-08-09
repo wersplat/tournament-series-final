@@ -33,6 +33,8 @@ export interface Match {
   status: 'scheduled' | 'completed' | 'canceled' | 'review'
   result_json?: unknown
   vod_url?: string | null
+  home_team_name?: string | null
+  away_team_name?: string | null
 }
 
 export interface Event {
