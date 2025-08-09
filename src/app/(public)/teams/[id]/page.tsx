@@ -1,4 +1,5 @@
 import { getTeamProfile } from '@/lib/api/public'
+import Image from 'next/image'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
 export default async function TeamProfilePage({ params }: { params: { id: string } }) {
@@ -6,8 +7,21 @@ export default async function TeamProfilePage({ params }: { params: { id: string
   if (!bundle.team) return <div>Team not found</div>
   return (
     <div className="space-y-4">
-      <div className="flex items-end justify-between">
-        <h1 className="text-2xl font-semibold">{bundle.team.name}</h1>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          {bundle.team.logo_url ? (
+            <Image
+              src={bundle.team.logo_url}
+              alt={`${bundle.team.name} logo`}
+              width={56}
+              height={56}
+              className="rounded-md border border-border bg-muted/30 object-cover"
+            />
+          ) : (
+            <div className="w-14 h-14 rounded-md border border-border bg-muted/30" />
+          )}
+          <h1 className="text-2xl font-semibold">{bundle.team.name}</h1>
+        </div>
         {bundle.team.region ? (
           <div className="text-xs text-muted-foreground">{bundle.team.region}</div>
         ) : null}

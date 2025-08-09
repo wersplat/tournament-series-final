@@ -1,9 +1,8 @@
 {
-  "/(public)/page": "app/(public)/page.js",
+  "/(public)/teams/page": "app/(public)/teams/page.js",
   "/(public)/players/page": "app/(public)/players/page.js",
+  "/(public)/teams/[id]/page": "app/(public)/teams/[id]/page.js",
+  "/(public)/rankings/page": "app/(public)/rankings/page.js",
   "/_not-found/page": "app/_not-found/page.js",
-  "/(public)/login/page": "app/(public)/login/page.js",
-  "/auth/signin/email/route": "app/auth/signin/email/route.js",
-  "/auth/signin/oauth/route": "app/auth/signin/oauth/route.js",
   "/(public)/media/page": "app/(public)/media/page.js"
 }
