@@ -1,0 +1,34 @@
+import { redirect } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { createServerSupabase } from '@/lib/supabase/server'
+import { getUserRole } from '@/lib/auth'
+
+export default async function LoginPage({ searchParams }: { searchParams: { next?: string } }) {
+  const supabase = createServerSupabase()
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
+  if (session) {
+    const role = await getUserRole()
+    if (role === 'admin') redirect('/admin')
+    redirect(searchParams.next || '/')
+  }
+  return (
+    <div className="max-w-md mx-auto tile p-6">
+      <h1 className="text-xl font-semibold mb-4">Sign in</h1>
+      <form className="space-y-3" action="/auth/signin/email" method="post">
+        <Input name="email" type="email" placeholder="you@example.com" required />
+        <Button type="submit" className="w-full">Send magic link</Button>
+      </form>
+      <div className="h-px bg-border my-4" />
+      <div className="grid gap-2">
+        <form action="/auth/signin/oauth" method="post"><input type="hidden" name="provider" value="google" /><Button className="w-full" type="submit" variant="outline">Continue with Google</Button></form>
+        <form action="/auth/signin/oauth" method="post"><input type="hidden" name="provider" value="discord" /><Button className="w-full" type="submit" variant="outline">Continue with Discord</Button></form>
+        <form action="/auth/signin/oauth" method="post"><input type="hidden" name="provider" value="twitter" /><Button className="w-full" type="submit" variant="outline">Continue with X / Twitter</Button></form>
+      </div>
+    </div>
+  )
+}
+
+
