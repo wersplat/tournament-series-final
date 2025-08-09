@@ -10,7 +10,7 @@ export default async function TeamsPage() {
         {teams.map((t) => (
           <Link key={t.id} href={`/teams/${t.id}`} className="tile p-4 focus-ring">
             <div className="font-medium">{t.name}</div>
-            <div className="text-xs text-muted-foreground">{t.conference}</div>
+            <div className="text-xs text-muted-foreground">{t.region || '—'}</div>
           </Link>
         ))}
       </div>

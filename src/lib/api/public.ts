@@ -1,75 +1,122 @@
 import { cache } from 'react'
-import type { Event, Match, MediaItem, Player, Standing, Team } from '@/lib/types'
+import type { Event, Match, MediaItem, Player, Standing, Team, UUID } from '@/lib/types'
+import { createServerSupabase } from '@/lib/supabase/server'
 
-const BASE_URL = process.env.PUBLIC_API_BASE_URL
+// Live data from Supabase. When env is missing, return minimal mocked values.
 
-async function fetchJson<T>(path: string, init?: RequestInit): Promise<T> {
-  if (!BASE_URL) return mockFetch<T>(path)
-  const res = await fetch(`${BASE_URL}${path}`, {
-    ...init,
-    headers: { 'content-type': 'application/json', ...(init?.headers || {}) },
-    next: { revalidate: 60, tags: [path] },
-  })
-  if (!res.ok) throw new Error(`Public API error ${res.status}`)
-  return (await res.json()) as T
+function isConfigured() {
+  return Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
 }
 
-async function mockFetch<T>(path: string): Promise<T> {
-  switch (true) {
-    case path.startsWith('/teams'):
-      return [
-        { id: 't1', name: 'Neon Knights', conference: 'East', logo_url: '/brand/logo.svg' },
-        { id: 't2', name: 'Shadow Wolves', conference: 'West', logo_url: '/brand/logo.svg' },
-      ] as unknown as T
-    case path.startsWith('/players'):
-      return [
-        { id: 'p1', gamertag: 'Ace', team_id: 't1' },
-        { id: 'p2', gamertag: 'Vex', team_id: 't2' },
-      ] as unknown as T
-    case path.startsWith('/standings'):
-      return [
-        { id: 's1', season: '2026', conference: 'East', team_id: 't1', w: 12, l: 4 },
-        { id: 's2', season: '2026', conference: 'West', team_id: 't2', w: 11, l: 5 },
-      ] as unknown as T
-    case path.startsWith('/schedule'):
-      return [
-        {
-          id: 'm1',
-          event_id: 'e1',
-          home_team_id: 't1',
-          away_team_id: 't2',
-          scheduled_at: new Date().toISOString(),
-          status: 'scheduled',
-        },
-      ] as unknown as T
-    case path.startsWith('/media'):
-      return [
-        { id: 'm1', title: 'Opening Highlights', url: 'https://example.com', type: 'video' },
-      ] as unknown as T
-    default:
-      return [] as unknown as T
+async function ensureClient() {
+  if (!isConfigured()) return null
+  return createServerSupabase()
+}
+
+// Teams
+export const getTeams = cache(async (): Promise<Team[]> => {
+  const client = await ensureClient()
+  if (!client) {
+    return [
+      { id: 't1', name: 'Neon Knights', logo_url: '/brand/logo.svg', conference: null, region: null },
+      { id: 't2', name: 'Shadow Wolves', logo_url: '/brand/logo.svg', conference: null, region: null },
+    ]
   }
-}
+  const { data, error } = await client.from('teams').select('id, name, logo_url, created_at')
+  if (error) throw error
+  return (data || []) as Team[]
+})
 
-export const getTeams = cache(async (): Promise<Team[]> => fetchJson('/teams'))
-export const getPlayers = cache(async (): Promise<Player[]> => fetchJson('/players'))
-export const getStandings = cache(async (): Promise<Standing[]> => fetchJson('/standings'))
-export const getSchedule = cache(async (): Promise<Match[]> => fetchJson('/schedule'))
-export const getMedia = cache(async (): Promise<MediaItem[]> => fetchJson('/media'))
+// Players
+export const getPlayers = cache(async (): Promise<Player[]> => {
+  const client = await ensureClient()
+  if (!client) {
+    return [
+      { id: 'p1', gamertag: 'Ace', team_id: 't1' },
+      { id: 'p2', gamertag: 'Vex', team_id: 't2' },
+    ]
+  }
+  const { data, error } = await client.from('players').select('id, gamertag, current_team_id, avatar_url, bio, created_at')
+  if (error) throw error
+  // Map current_team_id -> team_id for UI compatibility
+  return (data || []).map((p: any) => ({
+    id: p.id as UUID,
+    gamertag: p.gamertag as string,
+    team_id: (p.current_team_id as UUID) ?? null,
+    avatar_url: p.avatar_url ?? null,
+    bio: p.bio ?? null,
+    created_at: p.created_at ?? undefined,
+  })) as Player[]
+})
+
+// Schedule (matches)
+export const getSchedule = cache(async (): Promise<Match[]> => {
+  const client = await ensureClient()
+  if (!client) {
+    return [
+      {
+        id: 'm1',
+        event_id: 'e1',
+        home_team_id: 't1',
+        away_team_id: 't2',
+        scheduled_at: new Date().toISOString(),
+        status: 'scheduled',
+      },
+    ]
+  }
+  // Map Supabase schema to UI: teams stored as team_a_id/team_b_id
+  const { data, error } = await client
+    .from('matches')
+    .select('id, event_id, team_a_id, team_b_id, scheduled_at, status')
+    .order('scheduled_at', { ascending: true })
+  if (error) throw error
+  return (data || []).map((m: any) => ({
+    id: m.id,
+    event_id: m.event_id ?? null,
+    home_team_id: m.team_a_id,
+    away_team_id: m.team_b_id,
+    scheduled_at: m.scheduled_at,
+    status: (m.status === 'in_progress' || m.status === 'completed' || m.status === 'cancelled' || m.status === 'scheduled') ? m.status : 'scheduled',
+  })) as Match[]
+})
+
+// Standings - derived from calculate_team_standings(event_id) or fallback empty
+export const getStandings = cache(async (): Promise<Standing[]> => {
+  const client = await ensureClient()
+  if (!client) return []
+  // If you have a current event id, plug it here; otherwise return empty until wired.
+  const currentEventId = process.env.NEXT_PUBLIC_CURRENT_EVENT_ID
+  if (!currentEventId) return []
+  const { data, error } = await client.rpc('calculate_team_standings', { event_id_param: currentEventId })
+  if (error) throw error
+  return (data || []).map((row: any, idx: number) => ({
+    id: `${row.team_id}-${idx}`,
+    season: new Date().getFullYear().toString(),
+    conference: 'East',
+    team_id: row.team_id,
+    w: row.wins,
+    l: row.losses,
+    pd: row.point_differential,
+  })) as Standing[]
+})
+
+// Media placeholder - no direct table known yet
+export const getMedia = cache(async (): Promise<MediaItem[]> => {
+  return []
+})
 
 export const getTeamProfile = cache(async (id: string) => {
-  const teams = await getTeams()
-  const team = teams.find((t) => t.id === id)
-  const players = (await getPlayers()).filter((p) => p.team_id === id)
-  const matches = (await getSchedule()).filter((m) => m.home_team_id === id || m.away_team_id === id)
-  return { team, players, matches }
+  const [teams, players, schedule] = await Promise.all([getTeams(), getPlayers(), getSchedule()])
+  const team = teams.find((t) => t.id === id) || null
+  const roster = players.filter((p) => p.team_id === id)
+  const matches = schedule.filter((m) => m.home_team_id === id || m.away_team_id === id)
+  return { team, players: roster, matches }
 })
 
 export const getPlayerProfile = cache(async (id: string) => {
-  const players = await getPlayers()
-  const player = players.find((p) => p.id === id)
-  const matches = await getSchedule()
-  return { player, matches }
+  const [players, schedule] = await Promise.all([getPlayers(), getSchedule()])
+  const player = players.find((p) => p.id === id) || null
+  return { player, matches: schedule }
 })
 
 export async function queryGraphQL<T = unknown>(document: string, variables?: Record<string, unknown>) {

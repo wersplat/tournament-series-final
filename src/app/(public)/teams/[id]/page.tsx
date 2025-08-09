@@ -8,7 +8,9 @@ export default async function TeamProfilePage({ params }: { params: { id: string
     <div className="space-y-4">
       <div className="flex items-end justify-between">
         <h1 className="text-2xl font-semibold">{bundle.team.name}</h1>
-        <div className="text-xs text-muted-foreground">{bundle.team.conference}</div>
+        {bundle.team.region ? (
+          <div className="text-xs text-muted-foreground">{bundle.team.region}</div>
+        ) : null}
       </div>
       <Tabs defaultValue="overview">
         <TabsList>

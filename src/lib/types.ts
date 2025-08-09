@@ -3,7 +3,10 @@ export type UUID = string
 export interface Team {
   id: UUID
   name: string
-  conference: 'East' | 'West'
+  // Supabase does not store conference; keep optional for legacy usage
+  conference?: 'East' | 'West' | null
+  // Optional region metadata derived from Supabase if available
+  region?: string | null
   logo_url?: string | null
   coach?: string | null
   org_handle?: string | null
