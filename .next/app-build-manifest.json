@@ -36,15 +36,10 @@
       "static/chunks/main-app.js",
       "static/chunks/app/(public)/rankings/page.js"
     ],
-    "/(public)/players/page": [
+    "/(public)/schedule/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(public)/players/page.js"
-    ],
-    "/(public)/players/[id]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(public)/players/[id]/page.js"
+      "static/chunks/app/(public)/schedule/page.js"
     ],
     "/(public)/teams/page": [
       "static/chunks/webpack.js",
@@ -56,15 +51,20 @@
       "static/chunks/main-app.js",
       "static/chunks/app/(public)/teams/[id]/page.js"
     ],
-    "/(public)/events/page": [
+    "/(public)/players/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(public)/events/page.js"
+      "static/chunks/app/(public)/players/page.js"
     ],
-    "/(public)/schedule/page": [
+    "/(public)/players/[id]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(public)/schedule/page.js"
+      "static/chunks/app/(public)/players/[id]/page.js"
+    ],
+    "/(public)/login/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(public)/login/page.js"
     ]
   }
 }

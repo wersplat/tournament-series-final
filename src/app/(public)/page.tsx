@@ -1,10 +1,11 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { getSchedule, getMedia } from '@/lib/api/public'
+import { getSchedule, getMedia, getTeams } from '@/lib/api/public'
 
 export default async function LandingPage() {
-  const [schedule, media] = await Promise.all([getSchedule(), getMedia()])
+  const [schedule, media, teams] = await Promise.all([getSchedule(), getMedia(), getTeams()])
+  const teamName = Object.fromEntries(teams.map((t) => [t.id, t.name])) as Record<string, string>
   return (
     <div className="space-y-8">
       <section className="text-center space-y-4">
@@ -45,7 +46,9 @@ export default async function LandingPage() {
           {schedule.map((m) => (
             <Card key={m.id}>
               <CardHeader>
-                <CardTitle>Match {m.id}</CardTitle>
+                <CardTitle>
+                  {(m.home_team_name || teamName[m.home_team_id] || m.home_team_id)} vs {(m.away_team_name || teamName[m.away_team_id] || m.away_team_id)}
+                </CardTitle>
               </CardHeader>
               <CardContent className="text-muted-foreground">
                 {new Date(m.scheduled_at).toLocaleString()} — {m.status}
