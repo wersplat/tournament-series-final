@@ -72,9 +72,9 @@ export const getSchedule = cache(async (): Promise<Match[]> => {
       },
     ]
   }
-  // Map Supabase schema to UI: teams stored as team_a_id/team_b_id
+  // Use upcoming_matches for schedule view (has scheduled_at + status)
   const { data, error } = await client
-    .from('matches')
+    .from('upcoming_matches')
     .select('id, event_id, team_a_id, team_b_id, scheduled_at, status')
     .order('scheduled_at', { ascending: true })
   if (error) throw error
@@ -84,7 +84,7 @@ export const getSchedule = cache(async (): Promise<Match[]> => {
     home_team_id: m.team_a_id,
     away_team_id: m.team_b_id,
     scheduled_at: m.scheduled_at,
-    status: (m.status === 'in_progress' || m.status === 'completed' || m.status === 'cancelled' || m.status === 'scheduled') ? m.status : 'scheduled',
+    status: (m.status === 'in_progress' || m.status === 'completed' || m.status === 'cancelled' || m.status === 'scheduled' || m.status === 'review') ? m.status : 'scheduled',
   })) as Match[]
 })
 

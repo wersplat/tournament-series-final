@@ -13,7 +13,9 @@ const nextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "avatars.githubusercontent.com" },
-      { protocol: "https", hostname: "cdn.supabase.com" }
+      { protocol: "https", hostname: "cdn.supabase.com" },
+      // Supabase Storage signed URLs (project-specific domain)
+      { protocol: "https", hostname: "*.supabase.co" }
     ]
   }
 }
