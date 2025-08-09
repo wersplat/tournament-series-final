@@ -1,11 +1,7 @@
 {
   "/(public)/page": "app/(public)/page.js",
-  "/(public)/schedule/page": "app/(public)/schedule/page.js",
-  "/(public)/events/page": "app/(public)/events/page.js",
-  "/(public)/rankings/page": "app/(public)/rankings/page.js",
-  "/(public)/teams/page": "app/(public)/teams/page.js",
-  "/(public)/teams/[id]/page": "app/(public)/teams/[id]/page.js",
-  "/(public)/players/page": "app/(public)/players/page.js",
   "/(public)/players/[id]/page": "app/(public)/players/[id]/page.js",
-  "/(public)/media/page": "app/(public)/media/page.js"
+  "/(public)/standings/page": "app/(public)/standings/page.js",
+  "/(public)/teams/[id]/page": "app/(public)/teams/[id]/page.js",
+  "/(public)/players/page": "app/(public)/players/page.js"
 }

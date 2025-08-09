@@ -26,20 +26,25 @@
       "static/chunks/main-app.js",
       "static/chunks/app/not-found.js"
     ],
+    "/_not-found/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/_not-found/page.js"
+    ],
     "/(public)/schedule/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(public)/schedule/page.js"
     ],
-    "/(public)/events/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(public)/events/page.js"
-    ],
     "/(public)/rankings/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(public)/rankings/page.js"
+    ],
+    "/(public)/events/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(public)/events/page.js"
     ],
     "/(public)/teams/page": [
       "static/chunks/webpack.js",
@@ -51,16 +56,6 @@
       "static/chunks/main-app.js",
       "static/chunks/app/(public)/teams/[id]/page.js"
     ],
-    "/(public)/media/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(public)/media/page.js"
-    ],
-    "/(public)/media/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(public)/media/layout.js"
-    ],
     "/(public)/players/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -70,6 +65,11 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(public)/players/[id]/page.js"
+    ],
+    "/(public)/standings/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(public)/standings/page.js"
     ]
   }
 }
