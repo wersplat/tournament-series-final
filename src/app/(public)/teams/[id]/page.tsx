@@ -1,10 +1,18 @@
 import { getTeamProfile } from '@/lib/api/public'
 import Image from 'next/image'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
+import { createServerSupabase } from '@/lib/supabase/server'
 
 export default async function TeamProfilePage({ params }: { params: { id: string } }) {
   const bundle = await getTeamProfile(params.id)
   if (!bundle.team) return <div>Team not found</div>
+  const supabase = createServerSupabase()
+  const { data: pastMatches } = await supabase
+    .from('matches')
+    .select('id, scheduled_at, team_a_id, team_b_id, score_a, score_b, winner_id, played_at')
+    .or(`team_a_id.eq.${params.id},team_b_id.eq.${params.id}`)
+    .order('played_at', { ascending: false })
+    .limit(10)
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -31,6 +39,7 @@ export default async function TeamProfilePage({ params }: { params: { id: string
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="stats">Stats</TabsTrigger>
           <TabsTrigger value="media">Media</TabsTrigger>
+          <TabsTrigger value="history">History</TabsTrigger>
         </TabsList>
         <TabsContent value="overview" className="space-y-3">
           <div className="tile p-4">
@@ -53,6 +62,18 @@ export default async function TeamProfilePage({ params }: { params: { id: string
           </div>
         </TabsContent>
         <TabsContent value="stats">Stats coming soon.</TabsContent>
+        <TabsContent value="history" className="space-y-3">
+          <div className="tile p-4">
+            <div className="font-medium mb-2">Past Match Results</div>
+            <ul className="text-sm text-muted-foreground grid sm:grid-cols-2 gap-2">
+              {(pastMatches || []).filter((m: any) => m.played_at).map((m: any) => (
+                <li key={m.id}>
+                  {new Date(m.played_at).toLocaleString()} — {m.score_a ?? 0}:{m.score_b ?? 0} {m.winner_id ? `(W: ${m.winner_id === params.id ? 'This Team' : 'Opponent'})` : ''}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </TabsContent>
         <TabsContent value="media">Media coming soon.</TabsContent>
       </Tabs>
     </div>
