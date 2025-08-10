@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import matter from 'gray-matter'
 
 export type MediaMeta = {
   title: string
@@ -21,14 +22,17 @@ export async function listMediaPosts(): Promise<MediaMeta[]> {
     const slug = file.replace(/\.mdx$/, '')
     const full = path.join(CONTENT_DIR, file)
     const raw = await fs.readFile(full, 'utf8')
-    const fm = /---([\s\S]*?)---/.exec(raw)?.[1] || ''
-    const pick = (k: string) => new RegExp(`^${k}:\s*"?([^"\n]+)"?`, 'm').exec(fm)?.[1]
-    const title = pick('title')
-    const date = pick('date')
-    const author = pick('author')
-    const cover = pick('cover')
-    const tags = /tags:\s*\[(.*?)\]/.exec(fm)?.[1]?.split(',').map((s) => s.trim().replace(/^"|"$/g, ''))
-    metas.push({ slug, title: title || slug, date, author, cover, tags })
+    const { data } = matter(raw)
+
+    const title = typeof data.title === 'string' && data.title.trim().length > 0 ? (data.title as string).trim() : slug
+    const date = typeof data.date === 'string' ? (data.date as string) : undefined
+    const author = typeof data.author === 'string' ? (data.author as string) : undefined
+    const coverRaw = typeof data.cover === 'string' ? (data.cover as string) : undefined
+    const trimmedCover = coverRaw ? coverRaw.trim() : undefined
+    const cover = trimmedCover && (trimmedCover.startsWith('/') || trimmedCover.startsWith('http://') || trimmedCover.startsWith('https://')) ? trimmedCover : undefined
+    const tags = Array.isArray(data.tags) ? (data.tags as string[]).map((t) => String(t)) : undefined
+
+    metas.push({ slug, title, date, author, cover, tags })
   }
   return metas.sort((a, b) => (a.date && b.date ? b.date.localeCompare(a.date) : 0))
 }

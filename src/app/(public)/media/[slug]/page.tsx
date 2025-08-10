@@ -22,7 +22,7 @@ export default async function MediaArticlePage({ params }: { params: { slug: str
     return (
       <article className="space-y-4">
         <header className="space-y-1">
-          <h1 className="text-2xl font-semibold">{meta.title || params.slug}</h1>
+          <h1 className="text-2xl font-semibold text-foreground">{meta.title || params.slug}</h1>
           {meta.date && <div className="text-xs text-muted-foreground">{meta.date}</div>}
           {meta.author && (
             <div className="text-xs text-muted-foreground">

@@ -14,12 +14,26 @@ export default async function MediaPage() {
           <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
             {posts.map((p) => (
               <Link key={p.slug} href={`/media/${p.slug}`} className="tile p-0 overflow-hidden focus-ring">
-                {p.cover && (
+                {p.cover ? (
                   <Image src={p.cover} alt={p.title} width={1200} height={630} className="h-40 w-full object-cover" />
+                ) : (
+                  <div className="h-40 w-full bg-muted/20 border-b border-border/60" aria-hidden="true" />
                 )}
-                <div className="p-4">
-                  <div className="font-medium">{p.title}</div>
+                <div className="p-4 space-y-1">
+                  <div className="font-medium text-foreground">{p.title || p.slug}</div>
                   <div className="text-xs text-muted-foreground">{p.date || ''}</div>
+                  {Array.isArray(p.tags) && p.tags.length > 0 ? (
+                    <div className="flex flex-wrap gap-1 pt-1">
+                      {p.tags.slice(0, 4).map((t) => (
+                        <span
+                          key={t}
+                          className="inline-flex items-center rounded-full border border-primary/30 bg-accent/15 px-2 py-0.5 text-[10px] text-foreground/80"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  ) : null}
                 </div>
               </Link>
             ))}
