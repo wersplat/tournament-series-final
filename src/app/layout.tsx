@@ -4,7 +4,7 @@ import SiteHeader from '@/components/core/SiteHeader'
 import SiteFooter from '@/components/core/SiteFooter'
 
 export const metadata: Metadata = {
-  title: 'Unified Pro-Am 2K26',
+  title: '2K26 Tournament Series',
   description: 'Tournament Series — Schedule, Rankings, Teams, Players, Media',
   metadataBase: new URL('http://localhost:3000'),
 }

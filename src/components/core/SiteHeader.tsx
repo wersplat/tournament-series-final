@@ -14,8 +14,8 @@ export default async function SiteHeader() {
       <div className="container flex h-14 items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2 focus-ring">
-            <Image src="/brand/logo.svg" alt="UPA" width={28} height={28} />
-            <span className="text-sm font-semibold">Unified Pro-Am 2K26</span>
+            <Image src="/brand/logo.svg" alt="2K26" width={28} height={28} />
+            <span className="text-sm font-semibold">2K26 Tournament Series</span>
           </Link>
           <nav className="hidden md:flex items-center gap-3 text-sm">
             <Link href="/schedule" className="hover:underline">Schedule</Link>

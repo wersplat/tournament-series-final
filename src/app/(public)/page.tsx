@@ -10,7 +10,7 @@ export default async function LandingPage() {
     <div className="space-y-8">
       <section className="text-center space-y-4">
         <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight">
-          Unified Pro-Am: 2K26 Tournament Series
+          2K26 Tournament Series
         </h1>
         <p className="text-muted-foreground">Compete. Rank up. Make history.</p>
         <div className="flex items-center justify-center gap-3">

@@ -1,6 +1,6 @@
-## Unified Pro-Am: 2K26 Tournament Series — Web App
+## 2K26 Tournament Series — Web App
 
-Production-ready Next.js 14 (App Router) app for the Unified Pro-Am: 2K26 Tournament Series.
+Production-ready Next.js 14 (App Router) app for the 2K26 Tournament Series.
 
 ### Stack
 - **Next.js 14** (App Router) + **TypeScript**
