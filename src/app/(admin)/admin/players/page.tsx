@@ -21,7 +21,7 @@ export default async function AdminPlayersPage() {
       <form action={createAction} method="post" className="tile p-4 grid gap-2 max-w-md">
         <input type="hidden" name="op" value="create" />
         <input name="gamertag" placeholder="Gamertag" className="px-2 py-1 rounded-md bg-background border border-input text-sm" />
-        <select name="team_id" className="px-2 py-1 rounded-md bg-background border border-input text-sm">
+        <select name="current_team_id" className="px-2 py-1 rounded-md bg-background border border-input text-sm">
           <option value="">No team</option>
           {teams.map((t) => (
             <option key={t.id} value={t.id}>{t.name}</option>
@@ -34,7 +34,7 @@ export default async function AdminPlayersPage() {
         <ul className="space-y-2">
           {players.map((p) => (
             <li key={p.id} className="flex items-center gap-2">
-              <span className="flex-1">{p.gamertag} {p.team_id ? `· ${teamName[p.team_id] ?? p.team_id}` : ''}</span>
+              <span className="flex-1">{p.gamertag} {p.current_team_id ? `· ${teamName[p.current_team_id] ?? p.current_team_id}` : ''}</span>
               <form action={deleteAction} method="post">
                 <input type="hidden" name="op" value="delete" />
                 <input type="hidden" name="id" value={p.id} />
@@ -44,7 +44,7 @@ export default async function AdminPlayersPage() {
                 <input type="hidden" name="op" value="update" />
                 <input type="hidden" name="id" value={p.id} />
                 <input name="gamertag" defaultValue={p.gamertag} className="px-2 py-1 rounded-md bg-background border border-input text-sm" />
-                <select name="team_id" defaultValue={p.team_id ?? ''} className="px-2 py-1 rounded-md bg-background border border-input text-sm">
+                <select name="current_team_id" defaultValue={p.current_team_id ?? ''} className="px-2 py-1 rounded-md bg-background border border-input text-sm">
                   <option value="">No team</option>
                   {teams.map((t) => (
                     <option key={t.id} value={t.id}>{t.name}</option>

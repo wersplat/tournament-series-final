@@ -39,8 +39,8 @@ export const getPlayers = cache(async (): Promise<Player[]> => {
   const client = await ensureClient()
   if (!client) {
     return [
-      { id: 'p1', gamertag: 'Ace', team_id: 't1' },
-      { id: 'p2', gamertag: 'Vex', team_id: 't2' },
+      { id: 'p1', gamertag: 'Ace', current_team_id: 't1' },
+      { id: 'p2', gamertag: 'Vex', current_team_id: 't2' },
     ]
   }
   const { data, error } = await client.from('players').select('id, gamertag, position, current_team_id, created_at')
@@ -49,10 +49,12 @@ export const getPlayers = cache(async (): Promise<Player[]> => {
   return (data || []).map((p: any) => ({
     id: p.id as UUID,
     gamertag: p.gamertag as string,
-    team_id: (p.current_team_id as UUID) ?? null,
+    current_team_id: (p.current_team_id as UUID) ?? null,
     role: p.position ?? null,
     avatar_url: null,
-    bio: null,
+    discord_id: null,
+    twitter_id: null,
+    player_badges: null,
     created_at: p.created_at ?? undefined,
   })) as Player[]
 })
@@ -120,7 +122,7 @@ export const getTeamProfile = cache(async (id: string) => {
   if (!client) {
     const [teams, players, schedule] = await Promise.all([getTeams(), getPlayers(), getSchedule()])
     const team = teams.find((t) => t.id === id) || null
-    const roster = players.filter((p) => p.team_id === id)
+    const roster = players.filter((p) => p.current_team_id === id)
     const matches = schedule.filter((m) => m.home_team_id === id || m.away_team_id === id)
     return { team, players: roster, matches }
   }
@@ -157,7 +159,7 @@ export const getTeamProfile = cache(async (id: string) => {
   const team = teamRes.data
     ? ({ id: teamRes.data.id, name: teamRes.data.name, logo_url: teamRes.data.logo_url ?? null, region: null, conference: null, created_at: teamRes.data.created_at ?? undefined } as any)
     : null
-  const roster = (rosterRes.data || []).map((p: any) => ({ id: p.id, gamertag: p.gamertag, role: p.position ?? null, team_id: p.current_team_id ?? null }))
+  const roster = (rosterRes.data || []).map((p: any) => ({ id: p.id, gamertag: p.gamertag, role: p.position ?? null, current_team_id: p.current_team_id ?? null }))
   const matches = (upcoming.data || []).map((m: any) => ({
     id: m.id,
     event_id: m.event_id ?? null,

@@ -34,7 +34,7 @@ export async function insertPlayer(input: Partial<Player>) {
   const client = process.env.SUPABASE_SERVICE_ROLE_KEY ? createServiceSupabase() : createServerSupabase()
   const { data, error } = await client.from('players').insert({
     gamertag: input.gamertag,
-    current_team_id: input.team_id ?? null,
+    current_team_id: input.current_team_id ?? null,
   }).select('*').single()
   if (error) throw error
   // map current_team_id -> team_id for UI compatibility
@@ -45,7 +45,7 @@ export async function updatePlayerById(id: UUID, input: Partial<Player>) {
   const client = process.env.SUPABASE_SERVICE_ROLE_KEY ? createServiceSupabase() : createServerSupabase()
   const { data, error } = await client.from('players').update({
     gamertag: input.gamertag,
-    current_team_id: input.team_id ?? null,
+    current_team_id: input.current_team_id ?? null,
   }).eq('id', id).select('*').single()
   if (error) throw error
   return { id: data.id, gamertag: data.gamertag, team_id: data.current_team_id ?? null } as Player

@@ -16,11 +16,14 @@ export interface Team {
 export interface Player {
   id: UUID
   gamertag: string
+  position?: enum | null
   role?: string | null
   team_id?: UUID | null
-  country?: string | null
+  current_team_id?: UUID | null
   avatar_url?: string | null
-  bio?: string | null
+  discord_id?: string | null
+  twitter_id?: string | null
+  player_badges?: string[] | null
   created_at?: string
 }
 
@@ -108,9 +111,10 @@ export interface MediaItem {
 
 export interface Profile {
   id: UUID
-  user_id: UUID
-  role: 'user' | 'admin'
+  role: 'user' | 'admin' | 'league_staff'
   display_name?: string | null
+  team_id?: UUID | null
+  current_team_id?: UUID | null
   avatar_url?: string | null
 }
 
