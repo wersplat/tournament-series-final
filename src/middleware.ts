@@ -38,9 +38,8 @@ export async function middleware(req: NextRequest) {
     .eq('user_id', user.id)
     .single()
   if ((data as { role?: string } | null)?.role !== 'admin') {
-    const redirectUrl = new URL('/login', req.url)
-    redirectUrl.searchParams.set('next', req.nextUrl.pathname)
-    return NextResponse.redirect(redirectUrl)
+    // If a logged-in non-admin hits /admin, send them home (not back to login with next=/admin which loops)
+    return NextResponse.redirect(new URL('/', req.url))
   }
 
   return res

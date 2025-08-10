@@ -11,8 +11,14 @@ export default async function LoginPage({ searchParams }: { searchParams: { next
   } = await supabase.auth.getSession()
   if (session) {
     const role = await getUserRole()
-    if (role === 'admin') redirect('/admin')
-    redirect(searchParams.next || '/')
+    const nextParam = (searchParams.next && searchParams.next.startsWith('/')) ? searchParams.next : '/'
+    if (role === 'admin') {
+      // Admins can go wherever they intended, defaulting to /admin
+      redirect(nextParam || '/admin')
+    }
+    // Non-admins should never be redirected back to /admin
+    const safeNext = nextParam.startsWith('/admin') ? '/' : nextParam
+    redirect(safeNext)
   }
   return (
     <div className="max-w-md mx-auto tile p-6">
