@@ -29,9 +29,9 @@ export default async function SiteHeader() {
         <div className="flex items-center gap-2">
           <ThemeToggle />
           {user ? (
-            <form action="/auth/signout" method="post">
-              <Button type="submit" size="sm" variant="outline">Sign out</Button>
-            </form>
+            <Link href="/auth/signout" prefetch={false}>
+              <Button size="sm" variant="outline">Sign out</Button>
+            </Link>
           ) : (
             <Button asChild size="sm">
               <Link href="/login">Login</Link>
