@@ -10,10 +10,28 @@ export async function EventDetails({ eventId }: { eventId: string }) {
     supabase.from('event_results').select('team_id, placement, rp_awarded, prize_amount, teams(name, logo_url)').eq('event_id', eventId).order('placement', { ascending: true })
   ])
 
+  // Deduplicate roster rows into unique teams by team_id for display
+  const uniqueTeams = Array.from(
+    new Map(
+      (teams || [])
+        .filter((t: any) => t && t.team_id)
+        .map((t: any) => [t.team_id, t])
+    ).values()
+  )
+
   return (
     <div className="space-y-6">
       {event?.banner_url ? (
-        <Image src={event.banner_url} alt={event.name} width={960} height={480} className="w-full h-auto rounded-md border border-border object-cover" />
+        <div className="max-w-3xl mx-auto overflow-hidden rounded-2xl border border-border">
+          <Image
+            src={event.banner_url}
+            alt={event.name}
+            width={960}
+            height={540}
+            sizes="(min-width: 1024px) 768px, 100vw"
+            className="w-full h-auto object-cover"
+          />
+        </div>
       ) : null}
       <div>
         <div className="text-2xl font-semibold">{event?.name}</div>
@@ -26,9 +44,9 @@ export async function EventDetails({ eventId }: { eventId: string }) {
 
       <section className="space-y-2">
         <div className="font-medium">Registered Teams</div>
-        {teams && teams.length > 0 ? (
+        {uniqueTeams && uniqueTeams.length > 0 ? (
           <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
-            {teams.map((t: any) => (
+            {uniqueTeams.map((t: any) => (
               <li key={t.team_id} className="flex items-center gap-2 text-sm text-muted-foreground">
                 {t.teams?.logo_url ? (
                   <Image src={t.teams.logo_url} alt={t.teams.name} width={20} height={20} className="rounded-sm border border-border object-cover" />
