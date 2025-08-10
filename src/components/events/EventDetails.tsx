@@ -22,14 +22,13 @@ export async function EventDetails({ eventId }: { eventId: string }) {
   return (
     <div className="space-y-6">
       {event?.banner_url ? (
-        <div className="max-w-3xl mx-auto overflow-hidden rounded-2xl border border-border">
+        <div className="relative max-w-3xl mx-auto overflow-hidden rounded-2xl border border-border h-48 sm:h-64 md:h-72 lg:h-80">
           <Image
             src={event.banner_url}
             alt={event.name}
-            width={960}
-            height={540}
-            sizes="(min-width: 1024px) 768px, 100vw"
-            className="w-full h-auto object-cover"
+            fill
+            sizes="(min-width: 1280px) 768px, (min-width: 1024px) 700px, 100vw"
+            className="object-cover"
           />
         </div>
       ) : null}
