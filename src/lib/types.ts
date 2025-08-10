@@ -16,7 +16,7 @@ export interface Team {
 export interface Player {
   id: UUID
   gamertag: string
-  position?: enum | null
+  position?: 'Point Guard' | 'Shooting Guard' | 'Lock' | 'Power Forward' | 'Center' | null
   role?: string | null
   team_id?: UUID | null
   current_team_id?: UUID | null
