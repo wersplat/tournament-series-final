@@ -43,4 +43,12 @@ export async function requireAdmin() {
   return { ok: role === 'admin' }
 }
 
+export async function requireLeagueStaff() {
+  const session = await getSession()
+  if (!session) return { ok: false as const, reason: 'no-session' as const }
+  const role = await getUserRole()
+  return { ok: role === 'admin' || role === 'league_staff' }
+}
+
+
 
