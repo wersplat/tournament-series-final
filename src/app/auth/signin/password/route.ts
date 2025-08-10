@@ -14,7 +14,8 @@ export async function POST(req: NextRequest) {
   const supabase = createServerSupabase()
   const { error } = await supabase.auth.signInWithPassword({ email, password })
   if (error) return NextResponse.json({ error: error.message }, { status: 400 })
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+  const rawSite = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+  const siteUrl = rawSite.startsWith('http') ? rawSite : `https://${rawSite}`
   return NextResponse.redirect(new URL(next || '/', siteUrl))
 }
 
