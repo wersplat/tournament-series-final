@@ -20,8 +20,8 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  // Fallback: send to login on error
-  return NextResponse.redirect(`${origin}/login`)
+  // Fallback: send home on error
+  return NextResponse.redirect(`${origin}/`)
 }
 
 

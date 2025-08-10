@@ -17,9 +17,15 @@ export default async function LoginPage({ searchParams }: { searchParams: { next
   return (
     <div className="max-w-md mx-auto tile p-6">
       <h1 className="text-xl font-semibold mb-4">Sign in</h1>
+      <form className="space-y-3" action="/auth/signin/password" method="post">
+        <Input name="email" type="email" placeholder="you@example.com" required />
+        <Input name="password" type="password" placeholder="Your password" required />
+        <Button type="submit" className="w-full">Sign in</Button>
+      </form>
+      <div className="h-px bg-border my-4" />
       <form className="space-y-3" action="/auth/signin/email" method="post">
         <Input name="email" type="email" placeholder="you@example.com" required />
-        <Button type="submit" className="w-full">Send magic link</Button>
+        <Button type="submit" variant="outline" className="w-full">Send magic link</Button>
       </form>
       <div className="h-px bg-border my-4" />
       <div className="grid gap-2">
