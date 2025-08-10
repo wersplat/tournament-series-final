@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { AlertCircle, CheckCircle2, Info, TriangleAlert } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -10,14 +11,14 @@ const variantStyles: Record<Variant, string> = {
   danger: 'border-rose-400/40 bg-rose-400/10 text-rose-100',
 }
 
-const icons: Record<Variant, React.ReactNode> = {
+const icons: Record<Variant, ReactNode> = {
   info: <Info className="h-4 w-4" />,
   success: <CheckCircle2 className="h-4 w-4" />,
   warning: <TriangleAlert className="h-4 w-4" />,
   danger: <AlertCircle className="h-4 w-4" />,
 }
 
-export function Callout({ variant = 'info', children }: { variant?: Variant; children: React.ReactNode }) {
+export function Callout({ variant = 'info', children }: { variant?: Variant; children: ReactNode }) {
   return (
     <div className={cn('rounded-xl border p-3 text-sm flex items-start gap-2', variantStyles[variant])}>
       <div className="mt-0.5">{icons[variant]}</div>

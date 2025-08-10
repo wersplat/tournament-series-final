@@ -1,9 +1,10 @@
+import type { ComponentProps } from 'react'
 import * as TabsPrimitive from '@radix-ui/react-tabs'
 import { cn } from '@/lib/utils'
 
 export const Tabs = TabsPrimitive.Root
 
-export function TabsList(props: React.ComponentProps<typeof TabsPrimitive.List>) {
+export function TabsList(props: ComponentProps<typeof TabsPrimitive.List>) {
   return (
     <TabsPrimitive.List
       {...props}
@@ -12,7 +13,7 @@ export function TabsList(props: React.ComponentProps<typeof TabsPrimitive.List>)
   )
 }
 
-export function TabsTrigger(props: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
+export function TabsTrigger(props: ComponentProps<typeof TabsPrimitive.Trigger>) {
   return (
     <TabsPrimitive.Trigger
       {...props}

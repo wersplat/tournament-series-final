@@ -3,8 +3,11 @@ import Image from 'next/image'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { Table, Thead, Tbody, Tr, Th, Td } from '@/components/ui/table'
 
-export default async function TeamProfilePage({ params }: { params: { id: string } }) {
-  const bundle = await getTeamProfile(params.id)
+type Params = Promise<{ id: string }>
+
+export default async function TeamProfilePage({ params }: { params: Params }) {
+  const { id } = await params
+  const bundle = await getTeamProfile(id)
   if (!bundle.team) return <div>Team not found</div>
   const pastMatches = (bundle as any).pastMatches || []
   return (

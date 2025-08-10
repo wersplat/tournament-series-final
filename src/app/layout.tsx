@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import type { ReactNode } from 'react'
 import './globals.css'
 import SiteHeader from '@/components/core/SiteHeader'
 import SiteFooter from '@/components/core/SiteFooter'
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('http://localhost:3000'),
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className="dark">
       <body>

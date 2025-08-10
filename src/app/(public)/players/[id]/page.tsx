@@ -3,8 +3,11 @@ import { getPlayerProfile } from '@/lib/api/public'
 import { PlayStationProfile } from '@/components/profile/PlayStationProfile'
 import { XboxProfile } from '@/components/profile/XboxProfile'
 
-export default async function PlayerProfilePage({ params }: { params: { id: string } }) {
-  const bundle = await getPlayerProfile(params.id)
+type Params = Promise<{ id: string }>
+
+export default async function PlayerProfilePage({ params }: { params: Params }) {
+  const { id } = await params
+  const bundle = await getPlayerProfile(id)
   if (!bundle.player) return <div>Player not found</div>
   const averages = bundle.performance
     ? {

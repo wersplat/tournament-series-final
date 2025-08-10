@@ -4,14 +4,17 @@ import { Input } from '@/components/ui/input'
 import { createServerSupabase } from '@/lib/supabase/server'
 import { getUserRole } from '@/lib/auth'
 
-export default async function LoginPage({ searchParams }: { searchParams: { next?: string } }) {
+type SearchParams = Promise<{ next?: string }>
+
+export default async function LoginPage({ searchParams }: { searchParams: SearchParams }) {
   const supabase = createServerSupabase()
   const {
     data: { session },
   } = await supabase.auth.getSession()
   if (session) {
     const role = await getUserRole()
-    const nextParam = (searchParams.next && searchParams.next.startsWith('/')) ? searchParams.next : '/'
+    const sp = await searchParams
+    const nextParam = (sp.next && sp.next.startsWith('/')) ? sp.next : '/'
     if (role === 'admin') {
       // Admins can go wherever they intended, defaulting to /admin
       redirect(nextParam || '/admin')

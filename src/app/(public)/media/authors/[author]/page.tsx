@@ -7,11 +7,14 @@ export async function generateStaticParams() {
   return authors.map((author) => ({ author }))
 }
 
-export default async function MediaAuthorPage({ params }: { params: { author: string } }) {
-  const posts = (await listMediaPosts()).filter((p) => p.author === params.author)
+type Params = Promise<{ author: string }>
+
+export default async function MediaAuthorPage({ params }: { params: Params }) {
+  const { author } = await params
+  const posts = (await listMediaPosts()).filter((p) => p.author === author)
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-semibold">Author: {params.author}</h1>
+      <h1 className="text-xl font-semibold">Author: {author}</h1>
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
         {posts.map((p) => (
           <Link key={p.slug} href={`/media/${p.slug}`} className="tile p-4 focus-ring">

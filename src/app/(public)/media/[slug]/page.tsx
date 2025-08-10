@@ -13,8 +13,11 @@ export async function generateStaticParams() {
   return posts.map((p) => ({ slug: p.slug }))
 }
 
-export default async function MediaArticlePage({ params }: { params: { slug: string } }) {
-  const file = path.join(process.cwd(), 'content', 'media', `${params.slug}.mdx`)
+type Params = Promise<{ slug: string }>
+
+export default async function MediaArticlePage({ params }: { params: Params }) {
+  const { slug } = await params
+  const file = path.join(process.cwd(), 'content', 'media', `${slug}.mdx`)
   try {
     const source = await fs.readFile(file, 'utf8')
     const { content, data } = matter(source)
@@ -22,7 +25,7 @@ export default async function MediaArticlePage({ params }: { params: { slug: str
     return (
       <article className="space-y-4">
         <header className="space-y-1">
-          <h1 className="text-2xl font-semibold text-foreground">{meta.title || params.slug}</h1>
+          <h1 className="text-2xl font-semibold text-foreground">{meta.title || slug}</h1>
           {meta.date && <div className="text-xs text-muted-foreground">{meta.date}</div>}
           {meta.author && (
             <div className="text-xs text-muted-foreground">

@@ -8,11 +8,14 @@ export async function generateStaticParams() {
   return Array.from(tags).map((tag) => ({ tag }))
 }
 
-export default async function MediaTagPage({ params }: { params: { tag: string } }) {
-  const posts = (await listMediaPosts()).filter((p) => (p.tags || []).includes(params.tag))
+type Params = Promise<{ tag: string }>
+
+export default async function MediaTagPage({ params }: { params: Params }) {
+  const { tag } = await params
+  const posts = (await listMediaPosts()).filter((p) => (p.tags || []).includes(tag))
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-semibold">Tag: {params.tag}</h1>
+      <h1 className="text-xl font-semibold">Tag: {tag}</h1>
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
         {posts.map((p) => (
           <Link key={p.slug} href={`/media/${p.slug}`} className="tile p-4 focus-ring">

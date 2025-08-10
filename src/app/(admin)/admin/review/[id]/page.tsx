@@ -3,19 +3,24 @@ import { requireAdmin } from '@/lib/auth'
 import { approveSubmission, getSubmission, rejectSubmission } from '@/lib/api/admin'
 import { Button } from '@/components/ui/button'
 
-export default async function ReviewItemPage({ params }: { params: { id: string } }) {
+type Params = Promise<{ id: string }>
+
+export default async function ReviewItemPage(
+  { params }: { params: Params }
+) {
+  const resolvedParams = await params
   const can = await requireAdmin()
   if (!can.ok) return null
-  const sub = await getSubmission(params.id)
+  const sub = await getSubmission(resolvedParams.id)
   if (!sub) notFound()
   async function approve() {
     'use server'
-    await approveSubmission(params.id)
+    await approveSubmission(resolvedParams.id)
   }
   async function reject(formData: FormData) {
     'use server'
     const reason = String(formData.get('reason') || '')
-    await rejectSubmission(params.id, reason)
+    await rejectSubmission(resolvedParams.id, reason)
   }
   return (
     <div className="space-y-4">

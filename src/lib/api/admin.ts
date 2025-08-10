@@ -5,7 +5,7 @@ import type { Event, Submission, Team } from '@/lib/types'
 const BASE_URL = process.env.ADMIN_API_BASE_URL
 const ADMIN_API_KEY = process.env.ADMIN_API_KEY
 
-async function fetchAdmin<T>(path: string, init?: RequestInit): Promise<T> {
+async function fetchAdmin<T>(path: string, init?: any): Promise<T> {
   if (!BASE_URL) return mockAdmin<T>(path, init)
   const res = await fetch(`${BASE_URL}${path}`, {
     ...init,
@@ -20,7 +20,7 @@ async function fetchAdmin<T>(path: string, init?: RequestInit): Promise<T> {
   return (await res.json()) as T
 }
 
-async function mockAdmin<T>(path: string, init?: RequestInit): Promise<T> {
+async function mockAdmin<T>(path: string, init?: any): Promise<T> {
   if (path.startsWith('/submissions')) {
     const queue: Submission[] = [
       {
