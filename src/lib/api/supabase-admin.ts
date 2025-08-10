@@ -1,7 +1,7 @@
 'use server'
 import 'server-only'
 import type { Team, Player, UUID } from '@/lib/types'
-import { createServerSupabase } from '@/lib/supabase/server'
+import { createServerSupabase, createServiceSupabase } from '@/lib/supabase/server'
 
 export async function insertTeam(input: Partial<Team>) {
   const client = createServerSupabase()
@@ -31,7 +31,7 @@ export async function deleteTeamById(id: UUID) {
 }
 
 export async function insertPlayer(input: Partial<Player>) {
-  const client = createServerSupabase()
+  const client = process.env.SUPABASE_SERVICE_ROLE_KEY ? createServiceSupabase() : createServerSupabase()
   const { data, error } = await client.from('players').insert({
     gamertag: input.gamertag,
     current_team_id: input.team_id ?? null,
@@ -42,7 +42,7 @@ export async function insertPlayer(input: Partial<Player>) {
 }
 
 export async function updatePlayerById(id: UUID, input: Partial<Player>) {
-  const client = createServerSupabase()
+  const client = process.env.SUPABASE_SERVICE_ROLE_KEY ? createServiceSupabase() : createServerSupabase()
   const { data, error } = await client.from('players').update({
     gamertag: input.gamertag,
     current_team_id: input.team_id ?? null,
@@ -52,7 +52,7 @@ export async function updatePlayerById(id: UUID, input: Partial<Player>) {
 }
 
 export async function deletePlayerById(id: UUID) {
-  const client = createServerSupabase()
+  const client = process.env.SUPABASE_SERVICE_ROLE_KEY ? createServiceSupabase() : createServerSupabase()
   const { error } = await client.from('players').delete().eq('id', id)
   if (error) throw error
 }
