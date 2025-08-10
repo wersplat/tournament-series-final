@@ -20,12 +20,20 @@ export async function getUserRole() {
   const roles: string[] = Array.isArray(meta.roles) ? meta.roles.map((r: any) => String(r)) : []
   if (roles.includes('admin')) return 'admin'
   if (roles.includes('league_staff')) return 'league_staff'
-  const { data } = await supabase
+  // Fallback to DB profile role, trying common schemas: user_id (custom) or id (default)
+  const first = await supabase
     .from('profiles')
     .select('role')
     .eq('user_id', user.id)
     .single()
-  return (data as { role?: string } | null)?.role ?? null
+  if (!first.error && first.data) return (first.data as { role?: string }).role ?? null
+  const second = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single()
+  if (!second.error && second.data) return (second.data as { role?: string }).role ?? null
+  return null
 }
 
 export async function requireAdmin() {

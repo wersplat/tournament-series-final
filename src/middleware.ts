@@ -32,15 +32,25 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(redirectUrl)
   }
 
-  const { data } = await supabase
+  // Try custom schema first, then default Supabase profiles schema
+  let dbRole: string | null = null
+  const first = await supabase
     .from('profiles')
     .select('role')
     .eq('user_id', user.id)
     .single()
+  if (!first.error && first.data) dbRole = (first.data as { role?: string }).role ?? null
+  if (!dbRole) {
+    const second = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single()
+    if (!second.error && second.data) dbRole = (second.data as { role?: string }).role ?? null
+  }
   // Also honor roles from app metadata when present
   const meta: any = (user as any).raw_app_meta_data || (user as any).app_metadata || {}
   const roles: string[] = Array.isArray(meta.roles) ? meta.roles.map((r: any) => String(r)) : []
-  const dbRole = (data as { role?: string } | null)?.role
   const isAdmin = dbRole === 'admin' || roles.includes('admin')
   if (!isAdmin) {
     // If a logged-in non-admin hits /admin, send them home (not back to login with next=/admin which loops)
