@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import Image from 'next/image'
 import { getCurrentEvents, getUpcomingEvents } from '@/lib/api/public'
 
@@ -14,7 +15,7 @@ export default async function EventsPage() {
         ) : (
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {current.map((e) => (
-              <div key={e.id} className="tile p-4 space-y-2">
+              <Link key={e.id} href={`/events/${e.id}`} className="tile p-4 space-y-2 focus-ring block">
                 {e.banner_url ? (
                   <Image src={e.banner_url} alt={e.name} width={640} height={360} className="w-full h-auto rounded-md border border-border object-cover" />
                 ) : null}
@@ -22,7 +23,7 @@ export default async function EventsPage() {
                 <div className="text-xs text-muted-foreground">
                   {new Date(e.start_date).toLocaleDateString()} {e.end_date ? `– ${new Date(e.end_date).toLocaleDateString()}` : ''}
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}
@@ -35,7 +36,7 @@ export default async function EventsPage() {
         ) : (
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {upcoming.map((e) => (
-              <div key={e.id} className="tile p-4 space-y-2">
+              <Link key={e.id} href={`/events/${e.id}`} className="tile p-4 space-y-2 focus-ring block">
                 {e.banner_url ? (
                   <Image src={e.banner_url} alt={e.name} width={640} height={360} className="w-full h-auto rounded-md border border-border object-cover" />
                 ) : null}
@@ -43,7 +44,7 @@ export default async function EventsPage() {
                 <div className="text-xs text-muted-foreground">
                   {new Date(e.start_date).toLocaleDateString()} {e.end_date ? `– ${new Date(e.end_date).toLocaleDateString()}` : ''}
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}

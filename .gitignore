@@ -1,9 +1,9 @@
 node_modules/**
 
 # Next.js build output
-.next/**
-out/**
-dist/**
+.next
+out
+dist
 .env
 .env.local
 .env.development.local
