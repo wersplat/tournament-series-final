@@ -141,9 +141,16 @@ export const getTeamProfile = cache(async (id: string) => {
       .limit(10),
     client
       .from('team_match_stats')
-      .select('match_id, team_id, points, assists, rebounds, steals, fgm:field_goals_made, fga:field_goals_attempted, three_points_made, three_points_attempted, md:match_details!team_match_stats_match_id_fkey(played_at, team_a_id, team_b_id, team_a_name, team_b_name, winner_id)')
+      .select(`
+        match_id,
+        team_id,
+        points, assists, rebounds, steals,
+        fgm:field_goals_made, fga:field_goals_attempted,
+        three_points_made, three_points_attempted,
+        match_details:match_details!team_match_stats_match_id_fkey(played_at, team_a_id, team_b_id, team_a_name, team_b_name, winner_id)
+      `)
       .eq('team_id', id)
-      .order('md.played_at', { ascending: false })
+      .order('played_at', { ascending: false, foreignTable: 'match_details' })
       .limit(10),
   ])
 
@@ -163,12 +170,14 @@ export const getTeamProfile = cache(async (id: string) => {
   })) as Match[]
 
   const pastMatches = (history.data || [])
-  const recentStats: TeamRecentStat[] = (teamRecent.data || []).map((r: any) => ({
+  const recentStats: TeamRecentStat[] = (teamRecent.data || []).map((r: any) => {
+    const md = Array.isArray(r.match_details) ? r.match_details[0] : r.match_details
+    return ({
     match_id: r.match_id,
-    played_at: r.md?.played_at ?? null,
-    opponent_name: r.md ? (r.md.team_a_id === id ? r.md.team_b_name : r.md.team_a_name) : null,
-    is_home: r.md ? (r.md.team_a_id === id) : null,
-    is_winner: r.md ? (r.md.winner_id === id) : null,
+    played_at: md?.played_at ?? null,
+    opponent_name: md ? (md.team_a_id === id ? md.team_b_name : md.team_a_name) : null,
+    is_home: md ? (md.team_a_id === id) : null,
+    is_winner: md ? (md.winner_id === id) : null,
     points: r.points ?? null,
     assists: r.assists ?? null,
     rebounds: r.rebounds ?? null,
@@ -177,7 +186,7 @@ export const getTeamProfile = cache(async (id: string) => {
     fga: r.fga ?? null,
     three_points_made: r.three_points_made ?? null,
     three_points_attempted: r.three_points_attempted ?? null,
-  }))
+  })})
   return { team, players: roster, matches, pastMatches, recentStats }
 })
 

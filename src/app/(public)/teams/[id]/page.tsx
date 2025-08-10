@@ -86,7 +86,47 @@ export default async function TeamProfilePage({ params }: { params: { id: string
             )}
           </div>
         </TabsContent>
-        <TabsContent value="stats">Stats coming soon.</TabsContent>
+        <TabsContent value="stats" className="space-y-3">
+          <div className="tile p-4">
+            <div className="font-medium mb-2">Recent Team Stats</div>
+            {Array.isArray((bundle as any).recentStats) && (bundle as any).recentStats.length > 0 ? (
+              <Table>
+                <Thead>
+                  <Tr>
+                    <Th className="w-36">Date</Th>
+                    <Th>Opponent</Th>
+                    <Th className="w-16 text-center">Home</Th>
+                    <Th className="w-16 text-center">W/L</Th>
+                    <Th className="w-16 text-right">PTS</Th>
+                    <Th className="w-16 text-right">AST</Th>
+                    <Th className="w-16 text-right">REB</Th>
+                    <Th className="w-16 text-right">STL</Th>
+                    <Th className="w-20 text-right">FGM/FGA</Th>
+                    <Th className="w-20 text-right">3PM/3PA</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {(bundle as any).recentStats.slice(0, 10).map((r: any) => (
+                    <Tr key={r.match_id}>
+                      <Td className="text-muted-foreground">{r.played_at ? new Date(r.played_at).toLocaleDateString() : ''}</Td>
+                      <Td>{r.opponent_name || 'Opponent'}</Td>
+                      <Td className="text-center">{r.is_home === null ? '—' : r.is_home ? 'H' : 'A'}</Td>
+                      <Td className="text-center">{r.is_winner === null ? '—' : r.is_winner ? 'W' : 'L'}</Td>
+                      <Td className="text-right">{r.points ?? 0}</Td>
+                      <Td className="text-right">{r.assists ?? 0}</Td>
+                      <Td className="text-right">{r.rebounds ?? 0}</Td>
+                      <Td className="text-right">{r.steals ?? 0}</Td>
+                      <Td className="text-right">{r.fgm ?? 0}/{r.fga ?? 0}</Td>
+                      <Td className="text-right">{r.three_points_made ?? 0}/{r.three_points_attempted ?? 0}</Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+            ) : (
+              <div className="text-sm text-muted-foreground">No team stats yet.</div>
+            )}
+          </div>
+        </TabsContent>
         <TabsContent value="history" className="space-y-3">
           <div className="tile p-4">
             <div className="font-medium mb-2">Past Match Results</div>
