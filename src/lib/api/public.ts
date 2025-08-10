@@ -231,4 +231,27 @@ export const getUpcomingEvents = cache(async (): Promise<Event[]> => {
   })) as Event[]
 })
 
+export const getPastEvents = cache(async (): Promise<Event[]> => {
+  const client = await ensureClient()
+  if (!client) return []
+  const { data, error } = await client
+    .from('events')
+    .select('id, name, type, start_date, end_date, banner_url, rules_url, tier, prize_pool, status')
+    .eq('status', 'completed')
+    .order('end_date', { ascending: false })
+    .limit(12)
+  if (error) throw error
+  return (data || []).map((e: any) => ({
+    id: e.id,
+    name: e.name,
+    type: e.type ?? null,
+    start_date: e.start_date,
+    end_date: e.end_date ?? null,
+    bracket_url: null,
+    location: null,
+    notes: null,
+    banner_url: e.banner_url ?? undefined,
+  })) as Event[]
+})
+
 
