@@ -1,5 +1,5 @@
 import { cache } from 'react'
-import type { Event, Match, MediaItem, Player, Standing, Team, UUID } from '@/lib/types'
+import type { Event, Match, MediaItem, Player, Standing, Team, UUID, PlayerMatchStat } from '@/lib/types'
 import { createServerSupabase } from '@/lib/supabase/server'
 
 // Live data from Supabase. When env is missing, return minimal mocked values.
@@ -156,19 +156,40 @@ export const getTeamProfile = cache(async (id: string) => {
 export const getPlayerProfile = cache(async (id: string) => {
   const client = await ensureClient()
   // Base identity from players
-  const [playerRow, perf, schedule] = await Promise.all([
+  const [playerRow, perf, schedule, played] = await Promise.all([
     client
       ? client.from('players').select('id, gamertag, position, current_team_id').eq('id', id).single()
       : Promise.resolve({ data: null, error: null } as any),
     client ? client.from('player_performance_view').select('*').eq('id', id).single() : Promise.resolve({ data: null } as any),
     getSchedule(),
+    client
+      ? client
+          .from('player_match_history')
+          .select('match_id, played_at, team_a_name, team_b_name, score_a, score_b, points, assists, rebounds, steals')
+          .eq('player_id', id)
+          .order('played_at', { ascending: false })
+          .limit(10)
+      : Promise.resolve({ data: [] } as any),
   ])
   const base = playerRow?.data
   const player = base
     ? ({ id: base.id, gamertag: base.gamertag, role: base.position ?? null, team_id: base.current_team_id ?? null } as any)
     : null
   const performance = perf?.data || null
-  return { player, matches: schedule, performance }
+  const pastMatches: PlayerMatchStat[] = (played?.data || []).map((m: any) => ({
+    match_id: m.match_id,
+    played_at: m.played_at ?? null,
+    team_a_name: m.team_a_name ?? null,
+    team_b_name: m.team_b_name ?? null,
+    score_a: m.score_a ?? null,
+    score_b: m.score_b ?? null,
+    points: m.points ?? null,
+    assists: m.assists ?? null,
+    rebounds: m.rebounds ?? null,
+    steals: m.steals ?? null,
+  }))
+
+  return { player, matches: schedule, performance, pastMatches }
 })
 
 export async function queryGraphQL<T = unknown>(document: string, variables?: Record<string, unknown>) {

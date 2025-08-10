@@ -98,4 +98,17 @@ export interface Profile {
   avatar_url?: string | null
 }
 
+export interface PlayerMatchStat {
+  match_id: UUID
+  played_at?: string | null
+  team_a_name?: string | null
+  team_b_name?: string | null
+  score_a?: number | null
+  score_b?: number | null
+  points?: number | null
+  assists?: number | null
+  rebounds?: number | null
+  steals?: number | null
+}
+
 

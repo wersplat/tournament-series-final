@@ -20,7 +20,28 @@ export default async function PlayerProfilePage({ params }: { params: { id: stri
         <XboxProfile gamertag={bundle.player.gamertag} username={bundle.player.id} />
       </div>
       <div className="tile p-4 text-sm text-muted-foreground">Role: {bundle.player.role || '—'}</div>
-      <div className="tile p-4 text-sm text-muted-foreground">Recent matches: {bundle.matches.length}</div>
+      <div className="tile p-4">
+        <div className="font-medium mb-2">Recent matches</div>
+        {Array.isArray((bundle as any).pastMatches) && (bundle as any).pastMatches.length > 0 ? (
+          <ul className="text-sm text-muted-foreground grid sm:grid-cols-2 gap-2">
+            {(bundle as any).pastMatches.slice(0, 6).map((m: any) => (
+              <li key={m.match_id} className="flex items-center justify-between gap-2">
+                <span>
+                  {m.played_at ? new Date(m.played_at).toLocaleDateString() : ''} — {m.team_a_name || 'Team A'} vs {m.team_b_name || 'Team B'}
+                </span>
+                <span className="text-foreground/90 font-medium">
+                  {m.score_a ?? 0}:{m.score_b ?? 0}
+                </span>
+                <span className="text-xs text-muted-foreground whitespace-nowrap">
+                  PTS {m.points ?? 0} · AST {m.assists ?? 0} · REB {m.rebounds ?? 0} · STL {m.steals ?? 0}
+                </span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="text-sm text-muted-foreground">No recent matches.</div>
+        )}
+      </div>
     </div>
   )
 }
