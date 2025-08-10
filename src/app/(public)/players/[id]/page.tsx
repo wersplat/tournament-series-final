@@ -24,7 +24,8 @@ export default async function PlayerProfilePage({ params }: { params: { id: stri
       <div className="tile p-4">
         <div className="font-medium mb-2">Recent matches</div>
         {Array.isArray((bundle as any).pastMatches) && (bundle as any).pastMatches.length > 0 ? (
-          <Table>
+          <div className="overflow-x-auto -mx-2 sm:mx-0">
+          <Table className="min-w-[820px]">
             <Thead>
               <Tr>
                 <Th className="w-28">Date</Th>
@@ -54,6 +55,7 @@ export default async function PlayerProfilePage({ params }: { params: { id: stri
               ))}
             </Tbody>
           </Table>
+          </div>
         ) : (
           <div className="text-sm text-muted-foreground">No recent matches.</div>
         )}

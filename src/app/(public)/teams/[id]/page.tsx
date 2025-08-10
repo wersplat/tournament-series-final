@@ -49,7 +49,8 @@ export default async function TeamProfilePage({ params }: { params: { id: string
           <div className="tile p-4">
             <div className="font-medium mb-2">Recent Matches</div>
             {Array.isArray((bundle as any).recentStats) && (bundle as any).recentStats.length > 0 ? (
-              <Table>
+              <div className="overflow-x-auto -mx-2 sm:mx-0">
+              <Table className="min-w-[820px]">
                 <Thead>
                   <Tr>
                     <Th className="w-36">Date</Th>
@@ -81,6 +82,7 @@ export default async function TeamProfilePage({ params }: { params: { id: string
                   ))}
                 </Tbody>
               </Table>
+              </div>
             ) : (
               <div className="text-sm text-muted-foreground">No recent matches.</div>
             )}
@@ -90,7 +92,8 @@ export default async function TeamProfilePage({ params }: { params: { id: string
           <div className="tile p-4">
             <div className="font-medium mb-2">Recent Team Stats</div>
             {Array.isArray((bundle as any).recentStats) && (bundle as any).recentStats.length > 0 ? (
-              <Table>
+              <div className="overflow-x-auto -mx-2 sm:mx-0">
+              <Table className="min-w-[820px]">
                 <Thead>
                   <Tr>
                     <Th className="w-36">Date</Th>
@@ -122,6 +125,7 @@ export default async function TeamProfilePage({ params }: { params: { id: string
                   ))}
                 </Tbody>
               </Table>
+              </div>
             ) : (
               <div className="text-sm text-muted-foreground">No team stats yet.</div>
             )}
@@ -131,7 +135,8 @@ export default async function TeamProfilePage({ params }: { params: { id: string
           <div className="tile p-4">
             <div className="font-medium mb-2">Past Match Results</div>
             {pastMatches.length > 0 ? (
-              <Table>
+              <div className="overflow-x-auto -mx-2 sm:mx-0">
+              <Table className="min-w-[700px]">
                 <Thead>
                   <Tr>
                     <Th className="w-36">Date</Th>
@@ -149,6 +154,7 @@ export default async function TeamProfilePage({ params }: { params: { id: string
                   ))}
                 </Tbody>
               </Table>
+              </div>
             ) : (
               <div className="text-sm text-muted-foreground">No past matches.</div>
             )}
