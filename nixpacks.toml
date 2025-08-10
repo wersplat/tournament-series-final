@@ -1,0 +1,22 @@
+[phases.setup]
+nixPkgs = ["nodejs_18", "pnpm-9_x"]
+
+[phases.install]
+cmds = [
+  "npm install -g corepack@0.24.1",
+  "corepack enable",
+  "pnpm i --frozen-lockfile"
+]
+
+[phases.build]
+cmds = ["pnpm build"]
+# Override default caches to avoid tsconfig.tsbuildinfo mount
+caches = [
+  ".next/cache",
+  "node_modules/.cache"
+]
+
+[phases.start]
+cmd = "pnpm start"
+
+
