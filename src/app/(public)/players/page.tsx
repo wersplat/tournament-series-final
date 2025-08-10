@@ -1,18 +1,32 @@
 import Link from 'next/link'
 import { getPlayers } from '@/lib/api/public'
+import { Input } from '@/components/ui/input'
 
-export default async function PlayersPage() {
+export default async function PlayersPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+  const { q } = await searchParams
   const players = await getPlayers()
+  const query = (q || '').toLowerCase().trim()
+  const filtered = query
+    ? players.filter((p) =>
+        [p.gamertag, (p.role || ''), (p.id || '')].some((v) => String(v).toLowerCase().includes(query)),
+      )
+    : players
   return (
     <div className="space-y-4">
       <h1 className="text-xl font-semibold">Players</h1>
+      <form action="" className="flex gap-2">
+        <Input name="q" defaultValue={q || ''} placeholder="Search players…" className="max-w-md" />
+      </form>
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {players.map((p) => (
+        {filtered.map((p) => (
           <Link key={p.id} href={`/players/${p.id}`} className="tile p-4 focus-ring">
             <div className="font-medium">{p.gamertag}</div>
             <div className="text-xs text-muted-foreground">{p.role || '—'}</div>
           </Link>
         ))}
+        {filtered.length === 0 && (
+          <div className="text-sm text-muted-foreground">No players match your search.</div>
+        )}
       </div>
     </div>
   )
