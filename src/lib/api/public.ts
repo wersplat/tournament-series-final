@@ -125,7 +125,7 @@ export const getTeamProfile = cache(async (id: string) => {
     return { team, players: roster, matches }
   }
 
-  const [teamRes, rosterRes, upcoming] = await Promise.all([
+  const [teamRes, rosterRes, upcoming, history] = await Promise.all([
     client.from('teams').select('id, name, logo_url, region_id, created_at').eq('id', id).single(),
     client.from('players').select('id, gamertag, position, current_team_id').eq('current_team_id', id),
     client
@@ -133,6 +133,12 @@ export const getTeamProfile = cache(async (id: string) => {
       .select('id, event_id, team_a_id, team_b_id, scheduled_at, status, teams!upcoming_matches_team_a_id_fkey(name), teams_b:teams!upcoming_matches_team_b_id_fkey(name)')
       .or(`team_a_id.eq.${id},team_b_id.eq.${id}`)
       .order('scheduled_at', { ascending: true }),
+    client
+      .from('matches')
+      .select('id, played_at, team_a_id, team_b_id, team_a_name, team_b_name, score_a, score_b, winner_id')
+      .or(`team_a_id.eq.${id},team_b_id.eq.${id}`)
+      .order('played_at', { ascending: false })
+      .limit(10),
   ])
 
   const team = teamRes.data
@@ -150,7 +156,8 @@ export const getTeamProfile = cache(async (id: string) => {
     status: (m.status === 'in_progress' || m.status === 'completed' || m.status === 'cancelled' || m.status === 'scheduled' || m.status === 'review') ? m.status : 'scheduled',
   })) as Match[]
 
-  return { team, players: roster, matches }
+  const pastMatches = (history.data || [])
+  return { team, players: roster, matches, pastMatches }
 })
 
 export const getPlayerProfile = cache(async (id: string) => {
@@ -165,7 +172,7 @@ export const getPlayerProfile = cache(async (id: string) => {
     client
       ? client
           .from('player_match_history')
-          .select('match_id, played_at, team_a_name, team_b_name, score_a, score_b, points, assists, rebounds, steals')
+          .select('match_id, played_at, team_name, is_winner, points, assists, rebounds, steals')
           .eq('player_id', id)
           .order('played_at', { ascending: false })
           .limit(10)
@@ -179,10 +186,8 @@ export const getPlayerProfile = cache(async (id: string) => {
   const pastMatches: PlayerMatchStat[] = (played?.data || []).map((m: any) => ({
     match_id: m.match_id,
     played_at: m.played_at ?? null,
-    team_a_name: m.team_a_name ?? null,
-    team_b_name: m.team_b_name ?? null,
-    score_a: m.score_a ?? null,
-    score_b: m.score_b ?? null,
+    team_name: m.team_name ?? null,
+    is_winner: typeof m.is_winner === 'boolean' ? m.is_winner : null,
     points: m.points ?? null,
     assists: m.assists ?? null,
     rebounds: m.rebounds ?? null,

@@ -1,3 +1,4 @@
+      import { Table, Thead, Tbody, Tr, Th, Td } from '@/components/ui/table'
 import { getPlayerProfile } from '@/lib/api/public'
 import { PlayStationProfile } from '@/components/profile/PlayStationProfile'
 import { XboxProfile } from '@/components/profile/XboxProfile'
@@ -23,21 +24,32 @@ export default async function PlayerProfilePage({ params }: { params: { id: stri
       <div className="tile p-4">
         <div className="font-medium mb-2">Recent matches</div>
         {Array.isArray((bundle as any).pastMatches) && (bundle as any).pastMatches.length > 0 ? (
-          <ul className="text-sm text-muted-foreground grid sm:grid-cols-2 gap-2">
-            {(bundle as any).pastMatches.slice(0, 6).map((m: any) => (
-              <li key={m.match_id} className="flex items-center justify-between gap-2">
-                <span>
-                  {m.played_at ? new Date(m.played_at).toLocaleDateString() : ''} — {m.team_a_name || 'Team A'} vs {m.team_b_name || 'Team B'}
-                </span>
-                <span className="text-foreground/90 font-medium">
-                  {m.score_a ?? 0}:{m.score_b ?? 0}
-                </span>
-                <span className="text-xs text-muted-foreground whitespace-nowrap">
-                  PTS {m.points ?? 0} · AST {m.assists ?? 0} · REB {m.rebounds ?? 0} · STL {m.steals ?? 0}
-                </span>
-              </li>
-            ))}
-          </ul>
+          <Table>
+            <Thead>
+              <Tr>
+                <Th className="w-28">Date</Th>
+                <Th>Team</Th>
+                <Th className="w-16 text-center">W/L</Th>
+                <Th className="w-16 text-right">PTS</Th>
+                <Th className="w-16 text-right">AST</Th>
+                <Th className="w-16 text-right">REB</Th>
+                <Th className="w-16 text-right">STL</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {(bundle as any).pastMatches.slice(0, 10).map((m: any) => (
+                <Tr key={m.match_id}>
+                  <Td className="text-muted-foreground">{m.played_at ? new Date(m.played_at).toLocaleDateString() : ''}</Td>
+                  <Td>{m.team_name || 'Team'}</Td>
+                  <Td className="text-center">{m.is_winner === null ? '—' : m.is_winner ? 'W' : 'L'}</Td>
+                  <Td className="text-right">{m.points ?? 0}</Td>
+                  <Td className="text-right">{m.assists ?? 0}</Td>
+                  <Td className="text-right">{m.rebounds ?? 0}</Td>
+                  <Td className="text-right">{m.steals ?? 0}</Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
         ) : (
           <div className="text-sm text-muted-foreground">No recent matches.</div>
         )}

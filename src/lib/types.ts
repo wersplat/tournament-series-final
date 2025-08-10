@@ -101,6 +101,8 @@ export interface Profile {
 export interface PlayerMatchStat {
   match_id: UUID
   played_at?: string | null
+  team_name?: string | null
+  is_winner?: boolean | null
   team_a_name?: string | null
   team_b_name?: string | null
   score_a?: number | null
