@@ -15,7 +15,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Search
     const role = await getUserRole()
     const sp = await searchParams
     const nextParam = (sp.next && sp.next.startsWith('/')) ? sp.next : '/'
-    if (role === 'admin') {
+    if (role === 'admin' || role === 'league_staff') {
       // Admins can go wherever they intended, defaulting to /admin
       redirect(nextParam || '/admin')
     }

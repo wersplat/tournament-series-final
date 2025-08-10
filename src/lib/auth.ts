@@ -15,6 +15,11 @@ export async function getUserRole() {
     data: { user },
   } = await supabase.auth.getUser()
   if (!user) return null
+  // Prefer roles embedded in auth metadata when available
+  const meta: any = (user as any).raw_app_meta_data || (user as any).app_metadata || {}
+  const roles: string[] = Array.isArray(meta.roles) ? meta.roles.map((r: any) => String(r)) : []
+  if (roles.includes('admin')) return 'admin'
+  if (roles.includes('league_staff')) return 'league_staff'
   const { data } = await supabase
     .from('profiles')
     .select('role')
