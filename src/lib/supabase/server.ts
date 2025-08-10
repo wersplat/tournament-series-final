@@ -13,10 +13,19 @@ export function createServerSupabase() {
         return cookieStore.get(name)?.value
       },
       set(name: string, value: string, options: { path?: string; maxAge?: number }) {
-        cookieStore.set({ name, value, ...options })
+        try {
+          cookieStore.set({ name, value, ...options })
+        } catch {
+          // In React Server Components render phase, Next.js disallows cookie writes.
+          // Ignore writes here; route handlers will set cookies during auth flows.
+        }
       },
       remove(name: string, options: { path?: string }) {
-        cookieStore.set({ name, value: '', ...options })
+        try {
+          cookieStore.set({ name, value: '', ...options })
+        } catch {
+          // See above note – ignore during RSC render.
+        }
       },
     },
   })
