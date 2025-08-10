@@ -1,5 +1,5 @@
 import { cache } from 'react'
-import type { Event, Match, MediaItem, Player, Standing, Team, UUID, PlayerMatchStat } from '@/lib/types'
+import type { Event, Match, MediaItem, Player, Standing, Team, UUID, PlayerMatchStat, TeamRecentStat } from '@/lib/types'
 import { createServerSupabase } from '@/lib/supabase/server'
 
 // Live data from Supabase. When env is missing, return minimal mocked values.
@@ -125,7 +125,7 @@ export const getTeamProfile = cache(async (id: string) => {
     return { team, players: roster, matches }
   }
 
-  const [teamRes, rosterRes, upcoming, history] = await Promise.all([
+  const [teamRes, rosterRes, upcoming, history, teamRecent] = await Promise.all([
     client.from('teams').select('id, name, logo_url, region_id, created_at').eq('id', id).single(),
     client.from('players').select('id, gamertag, position, current_team_id').eq('current_team_id', id),
     client
@@ -134,10 +134,16 @@ export const getTeamProfile = cache(async (id: string) => {
       .or(`team_a_id.eq.${id},team_b_id.eq.${id}`)
       .order('scheduled_at', { ascending: true }),
     client
-      .from('matches')
-      .select('id, played_at, team_a_id, team_b_id, team_a_name, team_b_name, score_a, score_b, winner_id')
+      .from('match_details')
+      .select('id:match_id, played_at, team_a_id, team_b_id, team_a_name, team_b_name, score_a, score_b, winner_id')
       .or(`team_a_id.eq.${id},team_b_id.eq.${id}`)
       .order('played_at', { ascending: false })
+      .limit(10),
+    client
+      .from('team_match_stats')
+      .select('match_id, team_id, points, assists, rebounds, steals, fgm:field_goals_made, fga:field_goals_attempted, three_points_made, three_points_attempted, md:match_details!team_match_stats_match_id_fkey(played_at, team_a_id, team_b_id, team_a_name, team_b_name, winner_id)')
+      .eq('team_id', id)
+      .order('md.played_at', { ascending: false })
       .limit(10),
   ])
 
@@ -157,7 +163,22 @@ export const getTeamProfile = cache(async (id: string) => {
   })) as Match[]
 
   const pastMatches = (history.data || [])
-  return { team, players: roster, matches, pastMatches }
+  const recentStats: TeamRecentStat[] = (teamRecent.data || []).map((r: any) => ({
+    match_id: r.match_id,
+    played_at: r.md?.played_at ?? null,
+    opponent_name: r.md ? (r.md.team_a_id === id ? r.md.team_b_name : r.md.team_a_name) : null,
+    is_home: r.md ? (r.md.team_a_id === id) : null,
+    is_winner: r.md ? (r.md.winner_id === id) : null,
+    points: r.points ?? null,
+    assists: r.assists ?? null,
+    rebounds: r.rebounds ?? null,
+    steals: r.steals ?? null,
+    fgm: r.fgm ?? null,
+    fga: r.fga ?? null,
+    three_points_made: r.three_points_made ?? null,
+    three_points_attempted: r.three_points_attempted ?? null,
+  }))
+  return { team, players: roster, matches, pastMatches, recentStats }
 })
 
 export const getPlayerProfile = cache(async (id: string) => {
@@ -172,7 +193,7 @@ export const getPlayerProfile = cache(async (id: string) => {
     client
       ? client
           .from('player_match_history')
-          .select('match_id, played_at, team_name, is_winner, points, assists, rebounds, steals')
+          .select('match_id, played_at, team_name, is_winner, points, assists, rebounds, steals, fgm, fga, three_points_made, three_points_attempted')
           .eq('player_id', id)
           .order('played_at', { ascending: false })
           .limit(10)
@@ -192,6 +213,10 @@ export const getPlayerProfile = cache(async (id: string) => {
     assists: m.assists ?? null,
     rebounds: m.rebounds ?? null,
     steals: m.steals ?? null,
+    fgm: m.fgm ?? null,
+    fga: m.fga ?? null,
+    three_points_made: m.three_points_made ?? null,
+    three_points_attempted: m.three_points_attempted ?? null,
   }))
 
   return { player, matches: schedule, performance, pastMatches }

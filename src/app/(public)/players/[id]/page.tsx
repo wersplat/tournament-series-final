@@ -34,6 +34,8 @@ export default async function PlayerProfilePage({ params }: { params: { id: stri
                 <Th className="w-16 text-right">AST</Th>
                 <Th className="w-16 text-right">REB</Th>
                 <Th className="w-16 text-right">STL</Th>
+                <Th className="w-20 text-right">FGM/FGA</Th>
+                <Th className="w-20 text-right">3PM/3PA</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -46,6 +48,8 @@ export default async function PlayerProfilePage({ params }: { params: { id: stri
                   <Td className="text-right">{m.assists ?? 0}</Td>
                   <Td className="text-right">{m.rebounds ?? 0}</Td>
                   <Td className="text-right">{m.steals ?? 0}</Td>
+                  <Td className="text-right">{m.fgm ?? 0}/{m.fga ?? 0}</Td>
+                  <Td className="text-right">{m.three_points_made ?? 0}/{m.three_points_attempted ?? 0}</Td>
                 </Tr>
               ))}
             </Tbody>

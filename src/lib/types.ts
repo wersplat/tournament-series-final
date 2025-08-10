@@ -37,6 +37,22 @@ export interface Match {
   away_team_name?: string | null
 }
 
+export interface TeamRecentStat {
+  match_id: UUID
+  played_at?: string | null
+  opponent_name?: string | null
+  is_home?: boolean | null
+  is_winner?: boolean | null
+  points?: number | null
+  assists?: number | null
+  rebounds?: number | null
+  steals?: number | null
+  fgm?: number | null
+  fga?: number | null
+  three_points_made?: number | null
+  three_points_attempted?: number | null
+}
+
 export interface Event {
   id: UUID
   name: string
@@ -111,6 +127,10 @@ export interface PlayerMatchStat {
   assists?: number | null
   rebounds?: number | null
   steals?: number | null
+  fgm?: number | null
+  fga?: number | null
+  three_points_made?: number | null
+  three_points_attempted?: number | null
 }
 
 
