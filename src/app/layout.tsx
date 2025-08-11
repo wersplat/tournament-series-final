@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import './globals.css'
 import SiteHeader from '@/components/core/SiteHeader'
 import SiteFooter from '@/components/core/SiteFooter'
+import { Providers } from './providers'
 
 export const metadata: Metadata = {
   title: '2K26 Tournament Series',
@@ -14,15 +15,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className="dark">
       <body>
-        <a href="#content" className="sr-only focus:not-sr-only focus:ring-2 focus:ring-ring">
-          Skip to content
-        </a>
-        {/* header */}
-        <SiteHeader />
-        <main id="content" className="container py-6">
-          {children}
-        </main>
-        <SiteFooter />
+        <Providers>
+          <a href="#content" className="sr-only focus:not-sr-only focus:ring-2 focus:ring-ring">
+            Skip to content
+          </a>
+          <SiteHeader />
+          <main id="content" className="container py-6">
+            {children}
+          </main>
+          <SiteFooter />
+        </Providers>
       </body>
     </html>
   )

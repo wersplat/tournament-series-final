@@ -1,8 +1,9 @@
+"use client"
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 
 export function Table({ className, ...props }: React.HTMLAttributes<HTMLTableElement>) {
-  return <table className={cn('w-full caption-bottom text-sm', className)} {...props} />
+  return <table className={cn('w-full caption-bottom text-sm table-sticky table-zebra', className)} {...props} />
 }
 export function Thead(props: React.HTMLAttributes<HTMLTableSectionElement>) {
   return <thead {...props} className={cn('text-muted-foreground', props.className)} />

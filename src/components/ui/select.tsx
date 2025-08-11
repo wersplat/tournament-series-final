@@ -1,3 +1,4 @@
+"use client"
 import * as React from 'react'
 import * as SelectPrimitive from '@radix-ui/react-select'
 import { cn } from '@/lib/utils'
@@ -26,7 +27,7 @@ export const SelectContent = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.Portal>
-    <SelectPrimitive.Content ref={ref} className={cn('tile p-1', className)} {...props} />
+    <SelectPrimitive.Content ref={ref} className={cn('rounded-2xl border border-border bg-card ring-1 ring-transparent dark:ring-white/10 p-1', className)} {...props} />
   </SelectPrimitive.Portal>
 ))
 SelectContent.displayName = 'SelectContent'

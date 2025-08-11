@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { listMediaPosts } from '@/lib/mdx'
+import { Card, CardContent } from '@/components/ui/card'
 
 export async function generateStaticParams() {
   const posts = await listMediaPosts()
@@ -17,9 +18,13 @@ export default async function MediaAuthorPage({ params }: { params: Params }) {
       <h1 className="text-xl font-semibold">Author: {author}</h1>
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
         {posts.map((p) => (
-          <Link key={p.slug} href={`/media/${p.slug}`} className="tile p-4 focus-ring">
-            <div className="font-medium">{p.title}</div>
-            <div className="text-xs text-muted-foreground">{p.date || ''}</div>
+          <Link key={p.slug} href={`/media/${p.slug}`} className="focus-ring">
+            <Card>
+              <CardContent>
+                <div className="font-medium">{p.title}</div>
+                <div className="text-xs text-muted-foreground">{p.date || ''}</div>
+              </CardContent>
+            </Card>
           </Link>
         ))}
       </div>

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { getCurrentEvents, getUpcomingEvents, getPastEvents } from '@/lib/api/public'
+import { Card, CardContent } from '@/components/ui/card'
 
 export default async function EventsPage() {
   const [current, upcoming, past] = await Promise.all([getCurrentEvents(), getUpcomingEvents(), getPastEvents()])
@@ -15,14 +16,18 @@ export default async function EventsPage() {
         ) : (
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {current.map((e) => (
-              <Link key={e.id} href={`/events/${e.id}`} className="tile p-4 space-y-2 focus-ring block">
-                {e.banner_url ? (
-                  <Image src={e.banner_url} alt={e.name} width={640} height={360} className="w-full h-auto rounded-md border border-border object-cover" />
-                ) : null}
-                <div className="font-medium">{e.name}</div>
-                <div className="text-xs text-muted-foreground">
-                  {new Date(e.start_date).toLocaleDateString()} {e.end_date ? `– ${new Date(e.end_date).toLocaleDateString()}` : ''}
-                </div>
+              <Link key={e.id} href={`/events/${e.id}`} className="focus-ring block">
+                <Card>
+                  <CardContent>
+                    {e.banner_url ? (
+                      <Image src={e.banner_url} alt={e.name} width={640} height={360} className="w-full h-auto rounded-md border border-border object-cover" />
+                    ) : null}
+                    <div className="font-medium mt-2">{e.name}</div>
+                    <div className="text-xs text-muted-foreground">
+                      {new Date(e.start_date).toLocaleDateString()} {e.end_date ? `– ${new Date(e.end_date).toLocaleDateString()}` : ''}
+                    </div>
+                  </CardContent>
+                </Card>
               </Link>
             ))}
           </div>
@@ -36,14 +41,18 @@ export default async function EventsPage() {
         ) : (
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {upcoming.map((e) => (
-              <Link key={e.id} href={`/events/${e.id}`} className="tile p-4 space-y-2 focus-ring block">
-                {e.banner_url ? (
-                  <Image src={e.banner_url} alt={e.name} width={640} height={360} className="w-full h-auto rounded-md border border-border object-cover" />
-                ) : null}
-                <div className="font-medium">{e.name}</div>
-                <div className="text-xs text-muted-foreground">
-                  {new Date(e.start_date).toLocaleDateString()} {e.end_date ? `– ${new Date(e.end_date).toLocaleDateString()}` : ''}
-                </div>
+              <Link key={e.id} href={`/events/${e.id}`} className="focus-ring block">
+                <Card>
+                  <CardContent>
+                    {e.banner_url ? (
+                      <Image src={e.banner_url} alt={e.name} width={640} height={360} className="w-full h-auto rounded-md border border-border object-cover" />
+                    ) : null}
+                    <div className="font-medium mt-2">{e.name}</div>
+                    <div className="text-xs text-muted-foreground">
+                      {new Date(e.start_date).toLocaleDateString()} {e.end_date ? `– ${new Date(e.end_date).toLocaleDateString()}` : ''}
+                    </div>
+                  </CardContent>
+                </Card>
               </Link>
             ))}
           </div>
@@ -57,14 +66,18 @@ export default async function EventsPage() {
         ) : (
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {past.map((e) => (
-              <Link key={e.id} href={`/events/${e.id}`} className="tile p-4 space-y-2 focus-ring block">
-                {e.banner_url ? (
-                  <Image src={e.banner_url} alt={e.name} width={640} height={360} className="w-full h-auto rounded-md border border-border object-cover" />
-                ) : null}
-                <div className="font-medium">{e.name}</div>
-                <div className="text-xs text-muted-foreground">
-                  {new Date(e.start_date).toLocaleDateString()} {e.end_date ? `– ${new Date(e.end_date).toLocaleDateString()}` : ''}
-                </div>
+              <Link key={e.id} href={`/events/${e.id}`} className="focus-ring block">
+                <Card>
+                  <CardContent>
+                    {e.banner_url ? (
+                      <Image src={e.banner_url} alt={e.name} width={640} height={360} className="w-full h-auto rounded-md border border-border object-cover" />
+                    ) : null}
+                    <div className="font-medium mt-2">{e.name}</div>
+                    <div className="text-xs text-muted-foreground">
+                      {new Date(e.start_date).toLocaleDateString()} {e.end_date ? `– ${new Date(e.end_date).toLocaleDateString()}` : ''}
+                    </div>
+                  </CardContent>
+                </Card>
               </Link>
             ))}
           </div>

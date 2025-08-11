@@ -8,6 +8,8 @@ import {
   SortingState,
   useReactTable,
 } from "@tanstack/react-table"
+import { Card, CardContent } from "@/components/ui/card"
+import { Table, Thead, Tbody, Tr, Th, Td } from "@/components/ui/table"
 
 type Column<T> = {
   key: keyof T
@@ -46,45 +48,47 @@ export function DataTable<T extends Record<string, any>>({ data, columns }: { da
   })
 
   return (
-    <div className="tile p-4">
-      <input
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Filter…"
-        className="mb-3 w-full px-2 py-1 rounded-md bg-background border border-input text-sm"
-      />
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead className="text-muted-foreground">
-            {table.getHeaderGroups().map((hg) => (
-              <tr key={hg.id}>
-                {hg.headers.map((h) => (
-                  <th
-                    key={h.id}
-                    className="text-left font-medium p-2 cursor-pointer select-none"
-                    onClick={h.column.getToggleSortingHandler()}
-                  >
-                    {flexRender(h.column.columnDef.header, h.getContext())}
-                    {h.column.getIsSorted() === "asc" ? " ▲" : h.column.getIsSorted() === "desc" ? " ▼" : ""}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="border-t border-border/70">
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="p-2">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <Card className="p-4">
+      <CardContent className="p-0">
+        <input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Filter…"
+          className="mb-3 w-full px-2 py-1 rounded-md bg-background border border-input text-sm"
+        />
+        <div className="overflow-x-auto -mx-2 sm:mx-0">
+          <Table className="min-w-[820px]">
+            <Thead>
+              {table.getHeaderGroups().map((hg) => (
+                <Tr key={hg.id}>
+                  {hg.headers.map((h) => (
+                    <Th
+                      key={h.id}
+                      className="cursor-pointer select-none"
+                      onClick={h.column.getToggleSortingHandler()}
+                    >
+                      {flexRender(h.column.columnDef.header, h.getContext())}
+                      {h.column.getIsSorted() === "asc" ? " ▲" : h.column.getIsSorted() === "desc" ? " ▼" : ""}
+                    </Th>
+                  ))}
+                </Tr>
+              ))}
+            </Thead>
+            <Tbody>
+              {table.getRowModel().rows.map((row) => (
+                <Tr key={row.id}>
+                  {row.getVisibleCells().map((cell) => (
+                    <Td key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </Td>
+                  ))}
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </div>
+      </CardContent>
+    </Card>
   )
 }
 

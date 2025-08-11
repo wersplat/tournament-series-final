@@ -24,7 +24,7 @@ export default async function LandingPage() {
       </section>
 
       <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {([
+          {([
           { href: '/schedule', title: 'Schedule' },
           { href: '/rankings', title: 'Rankings' },
           { href: '/events', title: 'Events' },
@@ -33,9 +33,13 @@ export default async function LandingPage() {
           { href: '/standings', title: 'Standings' },
           { href: '/media', title: 'Media' },
         ] as const).map((t) => (
-          <Link key={t.href} href={t.href as any} className="tile p-6 focus-ring">
-            <div className="text-xl font-semibold">{t.title}</div>
-            <div className="text-xs text-muted-foreground">Explore {t.title.toLowerCase()}</div>
+          <Link key={t.href} href={t.href as any} className="focus-ring">
+            <Card>
+              <CardContent>
+                <div className="text-xl font-semibold">{t.title}</div>
+                <div className="text-xs text-muted-foreground">Explore {t.title.toLowerCase()}</div>
+              </CardContent>
+            </Card>
           </Link>
         ))}
       </section>

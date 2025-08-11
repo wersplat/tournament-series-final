@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { supabaseServer } from '@/lib/supabase/server'
 import { getUserRole } from '@/lib/auth'
+import { Card, CardContent } from '@/components/ui/card'
 
 type SearchParams = Promise<{ next?: string }>
 
@@ -24,25 +25,27 @@ export default async function LoginPage({ searchParams }: { searchParams: Search
     redirect(safeNext)
   }
   return (
-    <div className="max-w-md mx-auto tile p-6">
-      <h1 className="text-xl font-semibold mb-4">Sign in</h1>
-      <form className="space-y-3" action="/auth/signin/password" method="post">
-        <Input name="email" type="email" placeholder="you@example.com" required />
-        <Input name="password" type="password" placeholder="Your password" required />
-        <Button type="submit" className="w-full">Sign in</Button>
-      </form>
-      <div className="h-px bg-border my-4" />
-      <form className="space-y-3" action="/auth/signin/email" method="post">
-        <Input name="email" type="email" placeholder="you@example.com" required />
-        <Button type="submit" variant="outline" className="w-full">Send magic link</Button>
-      </form>
-      <div className="h-px bg-border my-4" />
-      <div className="grid gap-2">
-        <form action="/auth/signin/oauth" method="post"><input type="hidden" name="provider" value="google" /><Button className="w-full" type="submit" variant="outline">Continue with Google</Button></form>
-        <form action="/auth/signin/oauth" method="post"><input type="hidden" name="provider" value="discord" /><Button className="w-full" type="submit" variant="outline">Continue with Discord</Button></form>
-        <form action="/auth/signin/oauth" method="post"><input type="hidden" name="provider" value="twitter" /><Button className="w-full" type="submit" variant="outline">Continue with X / Twitter</Button></form>
-      </div>
-    </div>
+    <Card className="max-w-md mx-auto">
+      <CardContent className="p-6">
+        <h1 className="text-xl font-semibold mb-4">Sign in</h1>
+        <form className="space-y-3" action="/auth/signin/password" method="post">
+          <Input name="email" type="email" placeholder="you@example.com" required />
+          <Input name="password" type="password" placeholder="Your password" required />
+          <Button type="submit" className="w-full">Sign in</Button>
+        </form>
+        <div className="h-px bg-border my-4" />
+        <form className="space-y-3" action="/auth/signin/email" method="post">
+          <Input name="email" type="email" placeholder="you@example.com" required />
+          <Button type="submit" variant="outline" className="w-full">Send magic link</Button>
+        </form>
+        <div className="h-px bg-border my-4" />
+        <div className="grid gap-2">
+          <form action="/auth/signin/oauth" method="post"><input type="hidden" name="provider" value="google" /><Button className="w-full" type="submit" variant="outline">Continue with Google</Button></form>
+          <form action="/auth/signin/oauth" method="post"><input type="hidden" name="provider" value="discord" /><Button className="w-full" type="submit" variant="outline">Continue with Discord</Button></form>
+          <form action="/auth/signin/oauth" method="post"><input type="hidden" name="provider" value="twitter" /><Button className="w-full" type="submit" variant="outline">Continue with X / Twitter</Button></form>
+        </div>
+      </CardContent>
+    </Card>
   )
 }
 

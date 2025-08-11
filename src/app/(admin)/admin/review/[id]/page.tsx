@@ -1,7 +1,9 @@
+import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { requireAdmin } from '@/lib/auth'
 import { approveSubmission, getSubmission, rejectSubmission } from '@/lib/api/admin'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 
 type Params = Promise<{ id: string }>
 
@@ -26,18 +28,22 @@ export default async function ReviewItemPage(
     <div className="space-y-4">
       <h1 className="text-xl font-semibold">Submission {sub.id}</h1>
       <div className="grid gap-3 md:grid-cols-2">
-        <div className="tile p-4">
-          <div className="font-medium mb-2">Images</div>
-          <div className="grid grid-cols-2 gap-2">
-            {sub.images.map((src, i) => (
-              <img key={i} src={src} alt="evidence" className="rounded-lg border border-border" />
-            ))}
-          </div>
-        </div>
-        <div className="tile p-4">
-          <div className="font-medium mb-2">OCR JSON</div>
-          <pre className="text-xs whitespace-pre-wrap text-muted-foreground">{JSON.stringify(sub.ocr_json, null, 2)}</pre>
-        </div>
+        <Card>
+          <CardContent>
+            <div className="font-medium mb-2">Images</div>
+            <div className="grid grid-cols-2 gap-2">
+              {sub.images.map((src, i) => (
+                <Image key={i} src={src} alt="evidence" width={640} height={360} className="rounded-lg border border-border object-cover w-full h-auto" />
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent>
+            <div className="font-medium mb-2">OCR JSON</div>
+            <pre className="text-xs whitespace-pre-wrap text-muted-foreground">{JSON.stringify(sub.ocr_json, null, 2)}</pre>
+          </CardContent>
+        </Card>
       </div>
       <div className="flex gap-2">
         <form action={approve}><Button type="submit">Approve</Button></form>
