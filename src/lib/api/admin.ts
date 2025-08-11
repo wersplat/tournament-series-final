@@ -3,7 +3,7 @@ import 'server-only'
 import type { Event, Submission, Team } from '@/lib/types'
 
 const BASE_URL = process.env.ADMIN_API_BASE_URL
-const ADMIN_API_KEY = process.env.ADMIN_API_KEY
+const NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY = process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY
 
 async function fetchAdmin<T>(path: string, init?: any): Promise<T> {
   if (!BASE_URL) return mockAdmin<T>(path, init)
@@ -11,7 +11,7 @@ async function fetchAdmin<T>(path: string, init?: any): Promise<T> {
     ...init,
     headers: {
       'content-type': 'application/json',
-      'x-admin-api-key': ADMIN_API_KEY || '',
+      'x-admin-api-key': NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY || '',
       ...(init?.headers || {}),
     },
     cache: 'no-store',
