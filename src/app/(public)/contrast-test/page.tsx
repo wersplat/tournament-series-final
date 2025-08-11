@@ -21,12 +21,12 @@ export default function ContrastTestPage() {
             <div className="bg-[#0A1A3F] p-4 rounded-2xl">
               <h3 className="font-semibold text-white mb-2">Primary Navy (#0A1A3F)</h3>
               <p className="text-white/80">This text should be clearly readable on the primary navy background.</p>
-              <Button className="mt-2" color="navy">Navy Button</Button>
+              <Button className="mt-2">Primary Button</Button>
             </div>
             <div className="bg-[#007BFF] p-4 rounded-2xl">
               <h3 className="font-semibold text-white mb-2">Electric Blue (#007BFF)</h3>
               <p className="text-white/80">This text should be clearly readable on the electric blue background.</p>
-              <Button className="mt-2" color="blue">Blue Button</Button>
+              <Button className="mt-2" variant="secondary">Secondary Button</Button>
             </div>
           </div>
         </CardContent>
@@ -89,14 +89,11 @@ export default function ContrastTestPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex flex-wrap gap-2">
-            <Button color="navy">Primary Navy</Button>
-            <Button color="blue">Electric Blue</Button>
-            <Button color="orange">Vibrant Orange</Button>
-            <Button color="red">Deep Red</Button>
-            <Button variant="outline" color="navy">Outlined Navy</Button>
-            <Button variant="outline" color="blue">Outlined Blue</Button>
-            <Button variant="outline" color="orange">Outlined Orange</Button>
-            <Button variant="outline" color="red">Outlined Red</Button>
+            <Button>Primary</Button>
+            <Button variant="secondary">Secondary</Button>
+            <Button variant="outline">Outline</Button>
+            <Button variant="ghost">Ghost</Button>
+            <Button variant="link">Link</Button>
             <Button variant="ghost">Ghost Button</Button>
           </div>
         </CardContent>
