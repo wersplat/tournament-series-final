@@ -2,6 +2,8 @@ import { getTeamProfile } from '@/lib/api/public'
 import Image from 'next/image'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { Table, Thead, Tbody, Tr, Th, Td } from '@/components/ui/table'
+import TeamRoster5 from '@/components/sports/TeamRoster5'
+import LatestResults5 from '@/components/sports/LatestResults5'
 
 type Params = Promise<{ id: string }>
 
@@ -39,16 +41,18 @@ export default async function TeamProfilePage({ params }: { params: Params }) {
           <TabsTrigger value="history">History</TabsTrigger>
         </TabsList>
         <TabsContent value="overview" className="space-y-3">
-          <div className="tile p-4">
-            <div className="font-medium mb-2">Roster</div>
-            <ul className="grid sm:grid-cols-2 gap-2">
-              {bundle.players.map((p: any) => (
-                <li key={p.id} className="text-sm text-muted-foreground">
-                  {p.gamertag} {p.role ? `· ${p.role}` : ''}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <TeamRoster5
+            title="Roster"
+            players={bundle.players.map((p: any) => ({
+              id: p.id,
+              number: undefined,
+              position: p.role ?? null,
+              firstName: p.gamertag,
+              lastName: "",
+              img: null,
+              status: "active",
+            }))}
+          />
           <div className="tile p-4">
             <div className="font-medium mb-2">Recent Matches</div>
             {Array.isArray((bundle as any).recentStats) && (bundle as any).recentStats.length > 0 ? (
@@ -135,33 +139,19 @@ export default async function TeamProfilePage({ params }: { params: Params }) {
           </div>
         </TabsContent>
         <TabsContent value="history" className="space-y-3">
-          <div className="tile p-4">
-            <div className="font-medium mb-2">Past Match Results</div>
-            {pastMatches.length > 0 ? (
-              <div className="overflow-x-auto -mx-2 sm:mx-0">
-              <Table className="min-w-[700px]">
-                <Thead>
-                  <Tr>
-                    <Th className="w-36">Date</Th>
-                    <Th>Match</Th>
-                    <Th className="w-16 text-right">Score</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {pastMatches.filter((m: any) => m.played_at).slice(0, 10).map((m: any) => (
-                    <Tr key={m.id}>
-                      <Td className="text-muted-foreground">{new Date(m.played_at).toLocaleString()}</Td>
-                      <Td>{m.team_a_name || 'Team A'} vs {m.team_b_name || 'Team B'}</Td>
-                      <Td className="text-right">{m.score_a ?? 0}:{m.score_b ?? 0}</Td>
-                    </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-              </div>
-            ) : (
-              <div className="text-sm text-muted-foreground">No past matches.</div>
-            )}
-          </div>
+          {pastMatches.length > 0 ? (
+            <LatestResults5
+              results={pastMatches.slice(0, 5).map((m: any) => ({
+                date: m.played_at ? new Date(m.played_at).toLocaleDateString() : "",
+                team1: { name: m.team_a_name ?? "Team A" },
+                team2: { name: m.team_b_name ?? "Team B" },
+                score: `${m.score_a ?? 0} - ${m.score_b ?? 0}`,
+                competition: "",
+              }))}
+            />
+          ) : (
+            <div className="tile p-4 text-sm text-muted-foreground">No past matches.</div>
+          )}
         </TabsContent>
         <TabsContent value="media">Media coming soon.</TabsContent>
       </Tabs>
