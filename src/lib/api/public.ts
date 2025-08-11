@@ -15,6 +15,9 @@ export const getTeams = cache(async (): Promise<Team[]> => {
     conference: null,
     region: t.regions?.name ?? null,
     created_at: t.created_at ?? undefined,
+    wins: (t as any).wins ?? null,
+    losses: (t as any).losses ?? null,
+    games_played: (t as any).games_played ?? null,
   })) as Team[]
 })
 
@@ -78,9 +81,10 @@ export const getMedia = cache(async (): Promise<MediaItem[]> => {
 })
 
 export const getTeamProfile = cache(async (id: string) => {
-  const [teamRes, scheduleRes] = await Promise.all([
+  const [teamRes, scheduleRes, perfRes] = await Promise.all([
     apiFetch(`/api/teams/${id}`, {}, { tags: ['teams'], revalidate: 300 }),
     apiFetch('/api/views/upcoming-matches?limit=100', {}, { tags: ['schedule'], revalidate: 60 }),
+    apiFetch(`/api/views/team-performance-summary/${id}`, {}, { tags: ['teams'], revalidate: 300 })
   ])
   if (!teamRes.ok) return { team: null, players: [], matches: [] }
   const teamJson = await teamRes.json()
@@ -92,6 +96,7 @@ export const getTeamProfile = cache(async (id: string) => {
   // Optionally fetch recent stats via views endpoints if available
   const recentStats: TeamRecentStat[] = []
   const pastMatches: any[] = []
+  const perf = perfRes.ok ? await perfRes.json() : null
 
   return {
     team: team ? { id: team.id, name: team.name, logo_url: team.logo_url ?? null, region: team.regions?.name ?? null, conference: null } : null,
@@ -99,6 +104,7 @@ export const getTeamProfile = cache(async (id: string) => {
     matches,
     pastMatches,
     recentStats,
+    performance: perf,
   }
 })
 

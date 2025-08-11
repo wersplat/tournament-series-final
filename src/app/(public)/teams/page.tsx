@@ -20,7 +20,12 @@ export default async function TeamsPage({ searchParams }: { searchParams: Promis
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {filtered.map((t) => (
           <Link key={t.id} href={`/teams/${t.id}`} className="focus-ring block">
-            <TeamCard6 name={t.name} region={t.region} logoUrl={t.logo_url || String(t.logo_url)} />
+            <TeamCard6
+              name={t.name}
+              region={t.region}
+              logoUrl={t.logo_url || undefined}
+              stats={{ wins: (t as any).wins ?? null, losses: (t as any).losses ?? null, games: (t as any).games_played ?? null }}
+            />
           </Link>
         ))}
         {filtered.length === 0 && (
