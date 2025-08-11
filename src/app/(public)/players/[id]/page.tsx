@@ -56,18 +56,21 @@ export default async function PlayerProfilePage({ params }: { params: Params }) 
 
       {/* Stats and Schedule */}
       <div className="grid gap-6 lg:grid-cols-2">
-        <PlayerStats5 stats={statRows} />
+        <PlayerStats5 stats={statRows} title="Season Averages" />
         <div className="space-y-4">
           <h2 className="text-xl font-semibold">Upcoming Matches</h2>
           <MatchSchedule6 
-            matches={bundle.matches.slice(0, 5).map((m: any) => ({
-              id: m.id,
-              date: new Date(m.scheduled_at),
-              teamA: { name: m.home_team_name || 'Home Team' },
-              teamB: { name: m.away_team_name || 'Away Team' },
-              league: m.status,
-              timeLabel: new Date(m.scheduled_at).toLocaleTimeString(),
-            }))} 
+            matches={bundle.matches.slice(0, 5).map((m: any) => {
+              const scheduledDate = m.scheduled_at ? new Date(m.scheduled_at) : new Date();
+              return {
+                id: m.id,
+                date: scheduledDate,
+                teamA: { name: m.home_team_name || 'Home Team' },
+                teamB: { name: m.away_team_name || 'Away Team' },
+                league: m.status,
+                timeLabel: scheduledDate.toLocaleTimeString(),
+              };
+            })} 
           />
         </div>
       </div>

@@ -48,14 +48,17 @@ export default async function LandingPage() {
       <section>
         <h2 className="text-xl font-semibold mb-3">Upcoming Matches</h2>
         <MatchSchedule6 
-          matches={schedule.map((m) => ({
-            id: m.id,
-            date: new Date(m.scheduled_at),
-            teamA: { name: m.home_team_name || teamName[m.home_team_id] || m.home_team_id },
-            teamB: { name: m.away_team_name || teamName[m.away_team_id] || m.away_team_id },
-            league: m.status,
-            timeLabel: new Date(m.scheduled_at).toLocaleTimeString(),
-          }))} 
+          matches={schedule.map((m) => {
+            const scheduledDate = m.scheduled_at ? new Date(m.scheduled_at) : new Date();
+            return {
+              id: m.id,
+              date: scheduledDate,
+              teamA: { name: m.home_team_name || teamName[m.home_team_id] || m.home_team_id },
+              teamB: { name: m.away_team_name || teamName[m.away_team_id] || m.away_team_id },
+              league: m.status,
+              timeLabel: scheduledDate.toLocaleTimeString(),
+            };
+          })} 
         />
       </section>
 

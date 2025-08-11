@@ -41,21 +41,21 @@ export function PlayerProfile({ gamertag, username, avatarUrl, averages, starsLe
       <CardContent className="p-6 space-y-4">
         {/* Performance Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <div className="rounded-xl bg-secondary/10 p-4 text-center">
-            <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">PTS</div>
-            <div className="text-lg font-bold text-foreground">{avg.points.toFixed(1)}</div>
+          <div className="rounded-xl bg-primary/20 p-4 text-center border border-primary/30">
+            <div className="text-xs font-medium text-primary-foreground uppercase tracking-wide">PTS</div>
+            <div className="text-lg font-bold text-primary-foreground">{avg.points.toFixed(1)}</div>
           </div>
-          <div className="rounded-xl bg-secondary/10 p-4 text-center">
-            <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">AST</div>
-            <div className="text-lg font-bold text-foreground">{avg.assists.toFixed(1)}</div>
+          <div className="rounded-xl bg-accent/20 p-4 text-center border border-accent/30">
+            <div className="text-xs font-medium text-accent-foreground uppercase tracking-wide">AST</div>
+            <div className="text-lg font-bold text-accent-foreground">{avg.assists.toFixed(1)}</div>
           </div>
-          <div className="rounded-xl bg-secondary/10 p-4 text-center">
-            <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">REB</div>
-            <div className="text-lg font-bold text-foreground">{avg.rebounds.toFixed(1)}</div>
+          <div className="rounded-xl bg-accent-2/20 p-4 text-center border border-accent-2/30">
+            <div className="text-xs font-medium text-accent-2-foreground uppercase tracking-wide">REB</div>
+            <div className="text-lg font-bold text-accent-2-foreground">{avg.rebounds.toFixed(1)}</div>
           </div>
-          <div className="rounded-xl bg-secondary/10 p-4 text-center">
-            <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">STL</div>
-            <div className="text-lg font-bold text-foreground">{avg.steals.toFixed(1)}</div>
+          <div className="rounded-xl bg-secondary/20 p-4 text-center border border-secondary/30">
+            <div className="text-xs font-medium text-secondary-foreground uppercase tracking-wide">STL</div>
+            <div className="text-lg font-bold text-secondary-foreground">{avg.steals.toFixed(1)}</div>
           </div>
         </div>
 

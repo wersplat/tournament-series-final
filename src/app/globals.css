@@ -26,14 +26,14 @@
 /* Theme tokens via CSS variables: 2K26 Tournament Series Unified Palette */
 :root {
   --background: 240 6% 4%; /* #0b0b0c approx */
-  --foreground: 0 0% 96%; /* slightly dim to reduce glare */
+  --foreground: 0 0% 100%; /* Full white for maximum contrast */
   --muted: 240 4.8% 16.1%;
-  --muted-foreground: 240 6% 72%; /* increase contrast on dark */
+  --muted-foreground: 240 6% 85%; /* Higher contrast for muted text */
   --popover: 240 10% 3.9%;
-  --popover-foreground: 0 0% 98%;
+  --popover-foreground: 0 0% 100%;
   --card: 240 10% 6%;
-  --card-foreground: 0 0% 98%;
-  --border: 240 7% 38%;
+  --card-foreground: 0 0% 100%;
+  --border: 240 7% 45%; /* Increased border contrast */
   --input: 240 3.7% 15.9%;
   --primary: 220 75% 15%; /* #0A1A3F - Primary Navy */
   --primary-foreground: 0 0% 100%;
@@ -50,7 +50,7 @@
   --neutral-light: 220 20% 96%; /* #F4F6FA - Neutral Light */
   --neutral-mid: 220 10% 82%; /* #C5C9D3 - Neutral Mid */
   --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 0 0% 98%;
+  --destructive-foreground: 0 0% 100%;
   --ring: 220 75% 15%;
 
   --radius: 1rem; /* rounded-2xl vibe */

@@ -33,26 +33,33 @@ export default async function TeamProfilePage({ params }: { params: Params }) {
         <div className="space-y-4">
           <h2 className="text-xl font-semibold">Recent Results</h2>
           <LatestResults5 
-            results={bundle.matches?.slice(0, 5).map((m: any) => ({
-              date: new Date(m.played_at || m.scheduled_at).toLocaleDateString(),
-              team1: { name: m.team_a_name || 'Team A' },
-              team2: { name: m.team_b_name || 'Team B' },
-              score: m.status === 'completed' ? `${m.team_a_score || 0} - ${m.team_b_score || 0}` : 'TBD',
-              competition: m.status,
-            })) || []} 
+            results={bundle.matches?.slice(0, 5).map((m: any) => {
+              const matchDate = m.played_at || m.scheduled_at;
+              const date = matchDate ? new Date(matchDate).toLocaleDateString() : 'TBD';
+              return {
+                date,
+                team1: { name: m.team_a_name || 'Team A' },
+                team2: { name: m.team_b_name || 'Team B' },
+                score: m.status === 'completed' ? `${m.team_a_score || 0} - ${m.team_b_score || 0}` : 'TBD',
+                competition: m.status,
+              };
+            }) || []} 
           />
         </div>
         <div className="space-y-4">
           <h2 className="text-xl font-semibold">Upcoming Matches</h2>
           <MatchSchedule6 
-            matches={bundle.matches?.slice(0, 5).map((m: any) => ({
-              id: m.id,
-              date: new Date(m.scheduled_at),
-              teamA: { name: m.team_a_name || 'Team A' },
-              teamB: { name: m.team_b_name || 'Team B' },
-              league: m.status,
-              timeLabel: new Date(m.scheduled_at).toLocaleTimeString(),
-            })) || []} 
+            matches={bundle.matches?.slice(0, 5).map((m: any) => {
+              const scheduledDate = m.scheduled_at ? new Date(m.scheduled_at) : new Date();
+              return {
+                id: m.id,
+                date: scheduledDate,
+                teamA: { name: m.team_a_name || 'Team A' },
+                teamB: { name: m.team_b_name || 'Team B' },
+                league: m.status,
+                timeLabel: scheduledDate.toLocaleTimeString(),
+              };
+            }) || []} 
           />
         </div>
       </div>
