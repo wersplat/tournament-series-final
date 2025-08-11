@@ -40,21 +40,41 @@ export const getTeams = cache(async (): Promise<Team[]> => {
 
 // Players
 export const getPlayers = cache(async (): Promise<Player[]> => {
-  const res = await apiFetch('/api/players?limit=100', {}, { tags: ['players'], revalidate: 120 })
-  if (!res.ok) return []
-  const json = await res.json()
+  const [playersRes, perfRes] = await Promise.all([
+    apiFetch('/api/players?limit=100', {}, { tags: ['players'], revalidate: 120 }),
+    apiFetch('/api/views/player-performance', {}, { tags: ['players'], revalidate: 120 }),
+  ])
+  if (!playersRes.ok) return []
+  const json = await playersRes.json()
   const list = Array.isArray(json?.data) ? json.data : Array.isArray(json) ? json : []
-  return list.map((p: any) => ({
-    id: p.id as UUID,
-    gamertag: p.gamertag as string,
-    current_team_id: (p.current_team_id as UUID) ?? null,
-    role: p.position ?? null,
-    avatar_url: null,
-    discord_id: null,
-    twitter_id: null,
-    player_badges: null,
-    created_at: p.created_at ?? undefined,
-  })) as Player[]
+
+  const perfList = perfRes.ok ? await perfRes.json() : []
+  const perfByName = new Map<string, any>()
+  for (const p of Array.isArray(perfList) ? perfList : []) {
+    if (p.gamertag) perfByName.set(p.gamertag, p)
+  }
+
+  return list.map((p: any) => {
+    const perf = perfByName.get(p.gamertag)
+    return {
+      id: p.id as UUID,
+      gamertag: p.gamertag as string,
+      current_team_id: (p.current_team_id as UUID) ?? null,
+      role: p.position ?? null,
+      avatar_url: null,
+      discord_id: null,
+      twitter_id: null,
+      player_badges: null,
+      created_at: p.created_at ?? undefined,
+      // pass-through performance for cards
+      avg_points: perf?.avg_points ?? null,
+      field_goal_pct: perf?.field_goal_pct ?? null,
+      three_point_pct: perf?.three_point_pct ?? null,
+      games_played: perf?.games_played ?? null,
+      avg_performance_score: perf?.avg_performance_score ?? null,
+      player_rank_score: perf?.player_rank_score ?? null,
+    } as any
+  }) as Player[]
 })
 
 // Schedule (matches)

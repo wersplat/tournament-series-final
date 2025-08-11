@@ -22,7 +22,21 @@ export default async function PlayersPage({ searchParams }: { searchParams: Prom
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {filtered.map((p) => (
           <Link key={p.id} href={`/players/${p.id}`} className="focus-ring block">
-            <PlayerCard5 gamertag={p.gamertag} role={p.role} avatarUrl={p.avatar_url || undefined} />
+            <PlayerCard5
+              gamertag={p.gamertag}
+              role={p.role}
+              avatarUrl={p.avatar_url || undefined}
+              stats={{
+                ppg: (p as any).avg_points ?? null,
+                fgPct: (p as any).field_goal_pct ?? null,
+                threePct: (p as any).three_point_pct ?? null,
+              }}
+              footer={{
+                gamesPlayed: (p as any).games_played ?? null,
+                avgPerformance: (p as any).avg_performance_score ?? null,
+                rankScore: (p as any).player_rank_score ?? null,
+              }}
+            />
           </Link>
         ))}
         {filtered.length === 0 && (
