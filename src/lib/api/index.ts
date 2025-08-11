@@ -9,7 +9,7 @@ export async function apiFetch(path: string, init: FetchInit = {}, opts?: FetchO
   const { data } = await supabase.auth.getSession()
   const token = data.session?.access_token
 
-  const base = process.env.NEXT_PUBLIC_PUBLIC_API_URL
+  const base = process.env.NEXT_PUBLIC_API_BASE_URL
   const isLocalProxy = path.startsWith('/api/public/') || path.startsWith('/api/media/')
   const url = path.startsWith('http')
     ? path
@@ -17,7 +17,7 @@ export async function apiFetch(path: string, init: FetchInit = {}, opts?: FetchO
       ? path
       : base
         ? `${base}${path}`
-        : (() => { throw new Error('NEXT_PUBLIC_PUBLIC_API_URL is not set'); })()
+        : (() => { throw new Error('NEXT_PUBLIC_API_BASE_URL is not set'); })()
 
   return fetch(url, {
     ...(init as any),
@@ -38,10 +38,10 @@ export async function adminFetch(path: string, init: FetchInit = {}) {
   const token = data.session?.access_token
   if (!token) throw new Error('Not authenticated')
 
-  const base = process.env.NEXT_PUBLIC_ADMIN_API_URL
+  const base = process.env.NEXT_PUBLIC_ADMIN_API_BASE_URL
   const url = path.startsWith('http')
     ? path
-    : (base ? `${base}${path}` : (() => { throw new Error('NEXT_PUBLIC_ADMIN_API_URL is not set'); })())
+    : (base ? `${base}${path}` : (() => { throw new Error('NEXT_PUBLIC_ADMIN_API_BASE_URL is not set'); })())
 
   return fetch(url, {
     ...(init as any),
