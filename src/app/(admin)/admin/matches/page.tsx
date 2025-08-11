@@ -1,6 +1,7 @@
 import { requireAdmin } from '@/lib/auth'
 import { insertMatch, deleteMatchById } from '@/lib/api/supabase-admin'
 import { getTeams, getSchedule } from '@/lib/api/public'
+import { revalidateTag } from 'next/cache'
 
 export default async function AdminMatchesPage() {
   const can = await requireAdmin()
@@ -22,6 +23,8 @@ export default async function AdminMatchesPage() {
       team_a_name: team_a?.name ?? null,
       team_b_name: team_b?.name ?? null,
     })
+    revalidateTag('schedule')
+    revalidateTag('rankings')
   }
 
   async function deleteAction(formData: FormData) {
@@ -29,6 +32,7 @@ export default async function AdminMatchesPage() {
     const id = String(formData.get('id') || '')
     if (!id) return
     await deleteMatchById(id)
+    revalidateTag('schedule')
   }
 
   return (

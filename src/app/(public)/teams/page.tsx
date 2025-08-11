@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { getTeams } from '@/lib/api/public'
 import { Input } from '@/components/ui/input'
+export const revalidate = 300
 
 export default async function TeamsPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   const { q } = await searchParams

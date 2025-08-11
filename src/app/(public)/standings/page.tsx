@@ -1,4 +1,5 @@
 import { getStandings, getTeams } from '@/lib/api/public'
+export const revalidate = 60
 import { Table, Tbody, Thead, Tr, Th, Td } from '@/components/ui/table'
 
 export default async function StandingsPage() {

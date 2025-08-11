@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { requireAdmin, requireLeagueStaff } from '@/lib/auth'
 import { insertPlayer, updatePlayerById, deletePlayerById } from '@/lib/api/supabase-admin'
+import { revalidateTag } from 'next/cache'
 
 export async function POST(req: NextRequest) {
   const canAdmin = await requireAdmin()
@@ -25,6 +26,8 @@ export async function POST(req: NextRequest) {
       const id = String(form.get('id') || '')
       if (id) await deletePlayerById(id)
     }
+    revalidateTag('players')
+    revalidateTag('rankings')
   } catch (e) {
     console.error('admin players action error', e)
   }

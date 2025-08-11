@@ -1,14 +1,17 @@
 import Image from 'next/image'
-import { createServerSupabase } from '@/lib/supabase/server'
+import { apiFetch } from '@/lib/api'
 
 export async function EventDetails({ eventId }: { eventId: string }) {
-  const supabase = createServerSupabase()
-
-  const [{ data: event }, { data: teams } , { data: winners }] = await Promise.all([
-    supabase.from('events').select('id, name, description, start_date, end_date, banner_url, tier, prize_pool').eq('id', eventId).single(),
-    supabase.from('team_rosters').select('team_id, teams(name, logo_url)').eq('event_id', eventId),
-    supabase.from('event_results').select('team_id, placement, rp_awarded, prize_amount, teams(name, logo_url)').eq('event_id', eventId).order('placement', { ascending: true })
+  const [eventRes] = await Promise.all([
+    apiFetch(`/api/events/${eventId}`, {}, { tags: ['events'], revalidate: 120 }),
   ])
+  if (!eventRes.ok) throw new Error('Failed to load event')
+  const eventJson = await eventRes.json()
+  const event = eventJson?.data ?? eventJson
+  // The teams and winners info are embedded in the event payload in our public API routes
+  const fullEvent = event
+  const teams = fullEvent?.event_groups?.flatMap((g: any) => g?.event_group_members || []) || []
+  const winners = (fullEvent?.event_results || []).sort((a: any, b: any) => (a.placement ?? 0) - (b.placement ?? 0))
 
   // Deduplicate roster rows into unique teams by team_id for display
   const uniqueTeams = Array.from(
@@ -21,11 +24,11 @@ export async function EventDetails({ eventId }: { eventId: string }) {
 
   return (
     <div className="space-y-6">
-      {event?.banner_url ? (
+      {fullEvent?.banner_url ? (
         <div className="relative max-w-3xl mx-auto overflow-hidden rounded-2xl border border-border h-48 sm:h-64 md:h-72 lg:h-80">
           <Image
-            src={event.banner_url}
-            alt={event.name}
+            src={fullEvent.banner_url}
+            alt={fullEvent.name}
             fill
             sizes="(min-width: 1280px) 768px, (min-width: 1024px) 700px, 100vw"
             className="object-cover"
@@ -33,12 +36,12 @@ export async function EventDetails({ eventId }: { eventId: string }) {
         </div>
       ) : null}
       <div>
-        <div className="text-2xl font-semibold">{event?.name}</div>
+        <div className="text-2xl font-semibold">{fullEvent?.name}</div>
         <div className="text-xs text-muted-foreground">
-          {event?.start_date ? new Date(event.start_date).toLocaleDateString() : ''}
-          {event?.end_date ? ` – ${new Date(event.end_date).toLocaleDateString()}` : ''}
+          {fullEvent?.start_date ? new Date(fullEvent.start_date).toLocaleDateString() : ''}
+          {fullEvent?.end_date ? ` – ${new Date(fullEvent.end_date).toLocaleDateString()}` : ''}
         </div>
-        {event?.prize_pool ? <div className="text-sm mt-1">Prize pool: ${event.prize_pool.toLocaleString()}</div> : null}
+        {fullEvent?.prize_pool ? <div className="text-sm mt-1">Prize pool: ${fullEvent.prize_pool.toLocaleString()}</div> : null}
       </div>
 
       <section className="space-y-2">

@@ -42,7 +42,7 @@ export default async function TeamProfilePage({ params }: { params: Params }) {
           <div className="tile p-4">
             <div className="font-medium mb-2">Roster</div>
             <ul className="grid sm:grid-cols-2 gap-2">
-              {bundle.players.map((p) => (
+              {bundle.players.map((p: any) => (
                 <li key={p.id} className="text-sm text-muted-foreground">
                   {p.gamertag} {p.role ? `· ${p.role}` : ''}
                 </li>

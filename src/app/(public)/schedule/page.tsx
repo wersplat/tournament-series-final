@@ -1,4 +1,5 @@
 import { getSchedule, getTeams } from '@/lib/api/public'
+export const revalidate = 60
 
 export default async function SchedulePage() {
   const [schedule, teams] = await Promise.all([getSchedule(), getTeams()])

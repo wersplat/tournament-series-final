@@ -1,14 +1,13 @@
 import { DataTable } from '@/components/core/DataTable'
-import { createServerSupabase } from '@/lib/supabase/server'
+import { apiFetch } from '@/lib/api'
+export const revalidate = 60
 
 export default async function RankingsPage() {
-  const supabase = createServerSupabase()
-  const { data } = await supabase
-    .from('player_performance_view')
-    .select('gamertag, team_name, avg_points, avg_assists, avg_rebounds, avg_steals, avg_performance_score')
-    .order('avg_performance_score', { ascending: false })
-    .limit(100)
-  const rows = (data || []).map((p: any) => ({
+  const res = await apiFetch('/api/views/player-performance?limit=100', {}, { tags: ['rankings'], revalidate: 60 })
+  if (!res.ok) throw new Error('Failed to load rankings')
+  const json = await res.json()
+  const list = Array.isArray(json?.data) ? json.data : Array.isArray(json) ? json : []
+  const rows = (list || []).map((p: any) => ({
     Player: p.gamertag,
     Team: p.team_name ?? '—',
     PTS: Number(p.avg_points ?? 0).toFixed(1),

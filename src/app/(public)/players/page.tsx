@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { getPlayers } from '@/lib/api/public'
 import { Input } from '@/components/ui/input'
+export const revalidate = 120
 
 export default async function PlayersPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   const { q } = await searchParams

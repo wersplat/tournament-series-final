@@ -1,13 +1,13 @@
 import { redirect } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { createServerSupabase } from '@/lib/supabase/server'
+import { supabaseServer } from '@/lib/supabase/server'
 import { getUserRole } from '@/lib/auth'
 
 type SearchParams = Promise<{ next?: string }>
 
 export default async function LoginPage({ searchParams }: { searchParams: SearchParams }) {
-  const supabase = createServerSupabase()
+  const supabase = supabaseServer()
   const {
     data: { session },
   } = await supabase.auth.getSession()

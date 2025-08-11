@@ -32,23 +32,8 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(redirectUrl)
   }
 
-  // Try custom schema first, then default Supabase profiles schema
+  // Honor roles from app metadata when present; avoid direct DB reads here
   let dbRole: string | null = null
-  const first = await supabase
-    .from('profiles')
-    .select('role')
-    .eq('profiles.id', user.id)
-    .single()
-  if (!first.error && first.data) dbRole = (first.data as { role?: string }).role ?? null
-  if (!dbRole) {
-    const second = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('profiles.id', user.id)
-      .single()
-    if (!second.error && second.data) dbRole = (second.data as { role?: string }).role ?? null
-  }
-  // Also honor roles from app metadata when present
   const meta: any = (user as any).raw_app_meta_data || (user as any).app_metadata || {}
   const roles: string[] = Array.isArray(meta.roles) ? meta.roles.map((r: any) => String(r)) : []
   const isAdmin = dbRole === 'admin' || roles.includes('admin') || roles.includes('league_staff')

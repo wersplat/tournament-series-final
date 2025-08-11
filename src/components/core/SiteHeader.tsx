@@ -2,10 +2,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ThemeToggle } from '@/components/core/ThemeToggle'
 import { Button } from '@/components/ui/button'
-import { createServerSupabase } from '@/lib/supabase/server'
+import { supabaseServer } from '@/lib/supabase/server'
 
 export default async function SiteHeader() {
-  const supabase = createServerSupabase()
+  const supabase = supabaseServer()
   const {
     data: { user },
   } = await supabase.auth.getUser()

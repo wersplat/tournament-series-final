@@ -1,77 +1,53 @@
-'use server'
+"use server"
 import 'server-only'
 import type { Team, Player, UUID } from '@/lib/types'
-import { createServerSupabase, createServiceSupabase } from '@/lib/supabase/server'
+import { adminFetch } from '@/lib/api'
 
 export async function insertTeam(input: Partial<Team>) {
-  const client = createServerSupabase()
-  const { data, error } = await client.from('teams').insert({
-    name: input.name,
-    logo_url: input.logo_url ?? null,
-    region_id: null,
-  }).select('*').single()
-  if (error) throw error
-  return data as Team
+  const res = await adminFetch('/teams', { method: 'POST', body: JSON.stringify(input) })
+  if (!res.ok) throw new Error(await res.text())
+  return (await res.json()) as Team
 }
 
 export async function updateTeamById(id: UUID, input: Partial<Team>) {
-  const client = createServerSupabase()
-  const { data, error } = await client.from('teams').update({
-    name: input.name,
-    logo_url: input.logo_url ?? null,
-  }).eq('id', id).select('*').single()
-  if (error) throw error
-  return data as Team
+  const res = await adminFetch(`/teams/${id}`, { method: 'PATCH', body: JSON.stringify(input) })
+  if (!res.ok) throw new Error(await res.text())
+  return (await res.json()) as Team
 }
 
 export async function deleteTeamById(id: UUID) {
-  const client = createServerSupabase()
-  const { error } = await client.from('teams').delete().eq('id', id)
-  if (error) throw error
+  const res = await adminFetch(`/teams/${id}`, { method: 'DELETE' })
+  if (!res.ok) throw new Error(await res.text())
 }
 
 export async function insertPlayer(input: Partial<Player>) {
-  const client = process.env.SUPABASE_SERVICE_ROLE_KEY ? createServiceSupabase() : createServerSupabase()
-  const { data, error } = await client.from('players').insert({
-    gamertag: input.gamertag,
-    current_team_id: input.current_team_id ?? null,
-  }).select('*').single()
-  if (error) throw error
-  // map current_team_id -> team_id for UI compatibility
+  const res = await adminFetch('/players', { method: 'POST', body: JSON.stringify(input) })
+  if (!res.ok) throw new Error(await res.text())
+  const data = await res.json()
   return { id: data.id, gamertag: data.gamertag, team_id: data.current_team_id ?? null } as Player
 }
 
 export async function updatePlayerById(id: UUID, input: Partial<Player>) {
-  const client = process.env.SUPABASE_SERVICE_ROLE_KEY ? createServiceSupabase() : createServerSupabase()
-  const { data, error } = await client.from('players').update({
-    gamertag: input.gamertag,
-    current_team_id: input.current_team_id ?? null,
-  }).eq('id', id).select('*').single()
-  if (error) throw error
+  const res = await adminFetch(`/players/${id}`, { method: 'PATCH', body: JSON.stringify(input) })
+  if (!res.ok) throw new Error(await res.text())
+  const data = await res.json()
   return { id: data.id, gamertag: data.gamertag, team_id: data.current_team_id ?? null } as Player
 }
 
 export async function deletePlayerById(id: UUID) {
-  const client = process.env.SUPABASE_SERVICE_ROLE_KEY ? createServiceSupabase() : createServerSupabase()
-  const { error } = await client.from('players').delete().eq('id', id)
-  if (error) throw error
+  const res = await adminFetch(`/players/${id}`, { method: 'DELETE' })
+  if (!res.ok) throw new Error(await res.text())
 }
 
 export async function insertEvent(input: { name: string; start_date?: string }) {
-  const client = createServerSupabase()
-  const { data, error } = await client.from('events').insert({
-    name: input.name,
-    start_date: input.start_date ?? null,
-    status: 'upcoming',
-  }).select('*').single()
-  if (error) throw error
-  return data
+  const res = await adminFetch('/events', { method: 'POST', body: JSON.stringify(input) })
+  if (!res.ok) throw new Error(await res.text())
+  return await res.json()
 }
 
 export async function deleteEventById(id: UUID) {
-  const client = createServerSupabase()
-  const { error } = await client.from('events').delete().eq('id', id)
-  if (error) throw error
+  const res = await adminFetch(`/events/${id}`, { method: 'DELETE' })
+  if (!res.ok) throw new Error(await res.text())
 }
 
 export async function insertMatch(input: {
@@ -82,23 +58,14 @@ export async function insertMatch(input: {
   team_b_name?: string | null
   played_at?: string | null
 }) {
-  const client = createServerSupabase()
-  const { data, error } = await client.from('matches').insert({
-    event_id: input.event_id,
-    team_a_id: input.team_a_id,
-    team_b_id: input.team_b_id,
-    team_a_name: input.team_a_name ?? null,
-    team_b_name: input.team_b_name ?? null,
-    played_at: input.played_at ?? null,
-  }).select('*').single()
-  if (error) throw error
-  return data
+  const res = await adminFetch('/matches', { method: 'POST', body: JSON.stringify(input) })
+  if (!res.ok) throw new Error(await res.text())
+  return await res.json()
 }
 
 export async function deleteMatchById(id: UUID) {
-  const client = createServerSupabase()
-  const { error } = await client.from('matches').delete().eq('id', id)
-  if (error) throw error
+  const res = await adminFetch(`/matches/${id}`, { method: 'DELETE' })
+  if (!res.ok) throw new Error(await res.text())
 }
 
 
