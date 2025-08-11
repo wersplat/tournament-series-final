@@ -10,13 +10,14 @@ export async function apiFetch(path: string, init: FetchInit = {}, opts?: FetchO
   const token = data.session?.access_token
 
   const base = process.env.NEXT_PUBLIC_PUBLIC_API_URL
+  const isLocalProxy = path.startsWith('/api/public/') || path.startsWith('/api/media/')
   const url = path.startsWith('http')
     ? path
-    : (path.startsWith('/api/')
-        ? path
-        : base
-          ? `${base}${path}`
-          : (() => { throw new Error('NEXT_PUBLIC_PUBLIC_API_URL is not set'); })())
+    : isLocalProxy
+      ? path
+      : base
+        ? `${base}${path}`
+        : (() => { throw new Error('NEXT_PUBLIC_PUBLIC_API_URL is not set'); })()
 
   return fetch(url, {
     ...(init as any),
