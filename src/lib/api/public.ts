@@ -4,21 +4,38 @@ import { apiFetch } from '@/lib/api'
 
 // Teams
 export const getTeams = cache(async (): Promise<Team[]> => {
-  const res = await apiFetch('/api/teams', {}, { tags: ['teams'], revalidate: 300 })
-  if (!res.ok) return []
-  const json = await res.json()
-  const list = Array.isArray(json?.data) ? json.data : Array.isArray(json) ? json : []
-  return list.map((t: any) => ({
-    id: t.id,
-    name: t.name,
-    logo_url: t.logo_url ?? null,
-    conference: null,
-    region: t.regions?.name ?? null,
-    created_at: t.created_at ?? undefined,
-    wins: (t as any).wins ?? null,
-    losses: (t as any).losses ?? null,
-    games_played: (t as any).games_played ?? null,
-  })) as Team[]
+  const [teamsRes, perfRes] = await Promise.all([
+    apiFetch('/api/teams', {}, { tags: ['teams'], revalidate: 300 }),
+    apiFetch('/api/views/team-performance', {}, { tags: ['teams'], revalidate: 300 }),
+  ])
+  if (!teamsRes.ok) return []
+  const teamsJson = await teamsRes.json()
+  const list = Array.isArray(teamsJson?.data) ? teamsJson.data : Array.isArray(teamsJson) ? teamsJson : []
+
+  const perfList = perfRes.ok ? await perfRes.json() : []
+  const perfById = new Map<string, any>()
+  for (const p of Array.isArray(perfList) ? perfList : []) {
+    const key = (p.team_id || p.id) as string
+    if (key) perfById.set(key, p)
+  }
+
+  return list.map((t: any) => {
+    const perf = perfById.get(t.id)
+    const total_matches = perf?.total_matches ?? perf?.matches_played
+    const total_wins = perf?.total_wins ?? perf?.wins
+    const total_losses = perf?.total_losses ?? perf?.losses
+    return {
+      id: t.id,
+      name: t.name,
+      logo_url: t.logo_url ?? null,
+      conference: null,
+      region: t.regions?.name ?? null,
+      created_at: t.created_at ?? undefined,
+      wins: total_wins != null ? Number(total_wins) : null,
+      losses: total_losses != null ? Number(total_losses) : null,
+      games_played: total_matches != null ? Number(total_matches) : null,
+    } as Team
+  })
 })
 
 // Players
