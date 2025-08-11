@@ -1,9 +1,8 @@
-import { Table, Thead, Tbody, Tr, Th, Td } from '@/components/ui/table'
 import PlayerStats5 from '@/components/sports/PlayerStats5'
+import PlayerMatchHistory from '@/components/sports/PlayerMatchHistory'
 import { getPlayerProfile } from '@/lib/api/public'
 import { PlayStationProfile } from '@/components/profile/PlayStationProfile'
 import { XboxProfile } from '@/components/profile/XboxProfile'
-import { Card, CardContent } from '@/components/ui/card'
 
 type Params = Promise<{ id: string }>
 
@@ -32,47 +31,7 @@ export default async function PlayerProfilePage({ params }: { params: Params }) 
         <XboxProfile gamertag={bundle.player.gamertag} username={bundle.player.id} />
       </div>
       <PlayerStats5 stats={statRows} />
-      <Card>
-        <CardContent>
-          <div className="font-medium mb-2">Recent matches</div>
-          {Array.isArray((bundle as any).pastMatches) && (bundle as any).pastMatches.length > 0 ? (
-            <div className="overflow-x-auto -mx-2 sm:mx-0">
-            <Table className="min-w-[820px]">
-              <Thead>
-                <Tr>
-                  <Th className="w-28">Date</Th>
-                  <Th>Team</Th>
-                  <Th className="w-16 text-center">W/L</Th>
-                  <Th className="w-16 text-right">PTS</Th>
-                  <Th className="w-16 text-right">AST</Th>
-                  <Th className="w-16 text-right">REB</Th>
-                  <Th className="w-16 text-right">STL</Th>
-                  <Th className="w-20 text-right">FGM/FGA</Th>
-                  <Th className="w-20 text-right">3PM/3PA</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {(bundle as any).pastMatches.slice(0, 10).map((m: any) => (
-                  <Tr key={m.match_id}>
-                    <Td className="text-muted-foreground">{m.played_at ? new Date(m.played_at).toLocaleDateString() : ''}</Td>
-                    <Td>{m.team_name || 'Team'}</Td>
-                    <Td className="text-center">{m.is_winner === null ? '—' : m.is_winner ? 'W' : 'L'}</Td>
-                    <Td className="text-right">{m.points ?? 0}</Td>
-                    <Td className="text-right">{m.assists ?? 0}</Td>
-                    <Td className="text-right">{m.rebounds ?? 0}</Td>
-                    <Td className="text-right">{m.steals ?? 0}</Td>
-                    <Td className="text-right">{m.fgm ?? 0}/{m.fga ?? 0}</Td>
-                    <Td className="text-right">{m.three_points_made ?? 0}/{m.three_points_attempted ?? 0}</Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
-            </div>
-          ) : (
-            <div className="text-sm text-muted-foreground">No recent matches.</div>
-          )}
-        </CardContent>
-      </Card>
+      <PlayerMatchHistory matches={(bundle as any).pastMatches || []} />
     </div>
   )
 }

@@ -23,7 +23,7 @@ export default async function TeamsPage({ searchParams }: { searchParams: Promis
             <TeamCard6
               name={t.name}
               region={t.region}
-              logoUrl={t.logo_url || undefined}
+              logoUrl={t.logo_url || String(t.logo_url)}
               stats={{ wins: (t as any).wins ?? null, losses: (t as any).losses ?? null, games: (t as any).games_played ?? null }}
             />
           </Link>
