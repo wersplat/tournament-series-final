@@ -40,7 +40,7 @@ export const getTeams = cache(async (): Promise<Team[]> => {
 
 // Players
 export const getPlayers = cache(async (): Promise<Player[]> => {
-  const [playersRes, perfRes] = await Promise.all([
+  const [playersRes, summaryRes] = await Promise.all([
     apiFetch('/api/players?limit=100', {}, { tags: ['players'], revalidate: 120 }),
     apiFetch('/api/views/player-performance', {}, { tags: ['players'], revalidate: 120 }),
   ])
@@ -48,7 +48,7 @@ export const getPlayers = cache(async (): Promise<Player[]> => {
   const json = await playersRes.json()
   const list = Array.isArray(json?.data) ? json.data : Array.isArray(json) ? json : []
 
-  const perfList = perfRes.ok ? await perfRes.json() : []
+  const perfList = summaryRes.ok ? await summaryRes.json() : []
   const perfByName = new Map<string, any>()
   for (const p of Array.isArray(perfList) ? perfList : []) {
     if (p.gamertag) perfByName.set(p.gamertag, p)
@@ -66,11 +66,11 @@ export const getPlayers = cache(async (): Promise<Player[]> => {
       twitter_id: null,
       player_badges: null,
       created_at: p.created_at ?? undefined,
-      // pass-through performance for cards
+      // pass-through performance for cards (player_performance_summary fields)
       avg_points: perf?.avg_points ?? null,
-      field_goal_pct: perf?.field_goal_pct ?? null,
-      three_point_pct: perf?.three_point_pct ?? null,
-      games_played: perf?.games_played ?? null,
+      field_goal_pct: perf?.fg_percentage ?? perf?.field_goal_pct ?? null,
+      three_point_pct: perf?.three_point_percentage ?? perf?.three_point_pct ?? null,
+      games_played: perf?.matches_played ?? perf?.games_played ?? null,
       avg_performance_score: perf?.avg_performance_score ?? null,
       player_rank_score: perf?.player_rank_score ?? null,
     } as any
