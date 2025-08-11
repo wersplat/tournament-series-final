@@ -23,7 +23,7 @@
   }
 }
 
-/* Theme tokens via CSS variables: Xbox Dark (default) */
+/* Theme tokens via CSS variables: 2K26 Tournament Series Unified Palette */
 :root {
   --background: 240 6% 4%; /* #0b0b0c approx */
   --foreground: 0 0% 96%; /* slightly dim to reduce glare */
@@ -36,15 +36,23 @@
   /* Increase border contrast on Xbox theme */
   --border: 240 7% 38%;
   --input: 240 3.7% 15.9%;
-  --primary: 97 100% 50%; /* #9BF00B */
-  --primary-foreground: 240 10% 3.9%;
-  --secondary: 240 3.7% 15.9%;
-  --secondary-foreground: 0 0% 98%;
-  --accent: 191 100% 50%; /* #00E0FF */
-  --accent-foreground: 240 10% 3.9%;
+  --primary: 220 75% 15%; /* #0A1A3F - Primary Navy */
+  --primary-foreground: 0 0% 100%;
+  --secondary: 350 70% 40%; /* #A51E2C - Deep Red */
+  --secondary-foreground: 0 0% 100%;
+  --accent: 210 100% 50%; /* #007BFF - Electric Blue */
+  --accent-foreground: 0 0% 100%;
+  --accent-2: 25 100% 50%; /* #FF6B00 - Vibrant Orange */
+  --accent-2-foreground: 0 0% 100%;
+  --success: 142 76% 47%; /* #28C76F - Success Green */
+  --success-foreground: 0 0% 100%;
+  --error: 0 77% 56%; /* #E63946 - Error Red */
+  --error-foreground: 0 0% 100%;
+  --neutral-light: 220 20% 96%; /* #F4F6FA - Neutral Light */
+  --neutral-mid: 220 10% 82%; /* #C5C9D3 - Neutral Mid */
   --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 0 0% 98%;
-  --ring: 97 100% 50%;
+  --ring: 220 75% 15%;
 
   --radius: 1rem; /* rounded-2xl vibe */
 }
@@ -61,15 +69,23 @@
   --card-foreground: 231 15% 12%;
   --border: 220 14% 90%;
   --input: 220 14% 90%;
-  --primary: 221 100% 50%; /* PlayStation blue */
+  --primary: 220 75% 15%; /* #0A1A3F - Primary Navy */
   --primary-foreground: 0 0% 100%;
-  --secondary: 210 23% 95%;
-  --secondary-foreground: 231 15% 12%;
-  --accent: 221 100% 50%;
+  --secondary: 350 70% 40%; /* #A51E2C - Deep Red */
+  --secondary-foreground: 0 0% 100%;
+  --accent: 210 100% 50%; /* #007BFF - Electric Blue */
   --accent-foreground: 0 0% 100%;
+  --accent-2: 25 100% 50%; /* #FF6B00 - Vibrant Orange */
+  --accent-2-foreground: 0 0% 100%;
+  --success: 142 76% 47%; /* #28C76F - Success Green */
+  --success-foreground: 0 0% 100%;
+  --error: 0 77% 56%; /* #E63946 - Error Red */
+  --error-foreground: 0 0% 100%;
+  --neutral-light: 220 20% 96%; /* #F4F6FA - Neutral Light */
+  --neutral-mid: 220 10% 82%; /* #C5C9D3 - Neutral Mid */
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
-  --ring: 221 100% 50%;
+  --ring: 220 75% 15%;
 }
 
 body {

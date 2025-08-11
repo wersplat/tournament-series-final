@@ -16,7 +16,7 @@ export default function MatchSchedule6({ matches }: { matches: MatchItem[] }) {
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {matches.map((m) => (
           <Card key={m.id} className="overflow-hidden">
-            <div className="relative isolate overflow-hidden rounded-t-2xl bg-[#9BF00B]">
+            <div className="relative isolate overflow-hidden rounded-t-2xl bg-[#0A1A3F]">
               <div className="flex items-center justify-between px-4">
                 {[m.teamA, m.teamB].map((team, idx) => (
                   <div key={team.name + idx} className="flex gap-x-4 last:flex-row-reverse">

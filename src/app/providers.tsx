@@ -12,7 +12,7 @@ export function Providers({ children }: { children: ReactNode }) {
           defaultProps: {
             className:
               'rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
-            color: 'green',
+            color: 'navy',
             variant: 'filled',
           },
           styles: {
@@ -23,34 +23,62 @@ export function Providers({ children }: { children: ReactNode }) {
             },
             variants: {
               filled: {
-                green: {
-                  background: 'bg-[#9BF00B]',
-                  color: 'text-black',
+                blue: {
+                  background: 'bg-[#007BFF]',
+                  color: 'text-white',
                   '&:hover': {
-                    background: 'bg-[#8AE00A]',
+                    background: 'bg-[#0056CC]',
                   },
                 },
-                blue: {
-                  background: 'bg-[#00E0FF]',
-                  color: 'text-black',
+                orange: {
+                  background: 'bg-[#FF6B00]',
+                  color: 'text-white',
                   '&:hover': {
-                    background: 'bg-[#00C8E6]',
+                    background: 'bg-[#E55A00]',
+                  },
+                },
+                red: {
+                  background: 'bg-[#A51E2C]',
+                  color: 'text-white',
+                  '&:hover': {
+                    background: 'bg-[#8A1A25]',
+                  },
+                },
+                navy: {
+                  background: 'bg-[#0A1A3F]',
+                  color: 'text-white',
+                  '&:hover': {
+                    background: 'bg-[#08152F]',
                   },
                 },
               },
               outlined: {
-                green: {
-                  border: 'border border-[#9BF00B]',
-                  color: 'text-[#9BF00B]',
+                blue: {
+                  border: 'border border-[#007BFF]',
+                  color: 'text-[#007BFF]',
                   '&:hover': {
-                    background: 'bg-[#9BF00B]/10',
+                    background: 'bg-[#007BFF]/10',
                   },
                 },
-                blue: {
-                  border: 'border border-[#00E0FF]',
-                  color: 'text-[#00E0FF]',
+                orange: {
+                  border: 'border border-[#FF6B00]',
+                  color: 'text-[#FF6B00]',
                   '&:hover': {
-                    background: 'bg-[#00E0FF]/10',
+                    background: 'bg-[#FF6B00]/10',
+                  },
+                },
+                red: {
+                  border: 'border border-[#A51E2C]',
+                  color: 'text-[#A51E2C]',
+                  '&:hover': {
+                    background: 'bg-[#A51E2C]/10',
+                  },
+                },
+                navy: {
+                  border: 'border border-[#0A1A3F]',
+                  color: 'text-[#0A1A3F]',
+                  '&:hover': {
+                    background: 'bg-[#0A1A3F]/10',
                   },
                 },
               },

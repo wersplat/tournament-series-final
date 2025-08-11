@@ -54,14 +54,20 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        "team-golden": {
-          primary: "#FF9000",
-          secondary: "#FFB347",
+        "accent-2": {
+          DEFAULT: "hsl(var(--accent-2))",
+          foreground: "hsl(var(--accent-2-foreground))",
         },
-        "team-emerald": {
-          primary: "#00E0FF",
-          secondary: "#33E6FF",
+        "success": {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
         },
+        "error": {
+          DEFAULT: "hsl(var(--error))",
+          foreground: "hsl(var(--error-foreground))",
+        },
+        "neutral-light": "hsl(var(--neutral-light))",
+        "neutral-mid": "hsl(var(--neutral-mid))",
       },
       borderRadius: {
         lg: "var(--radius)",

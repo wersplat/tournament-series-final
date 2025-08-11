@@ -18,14 +18,14 @@ export default function ContrastTestPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-[#9BF00B] p-4 rounded-2xl">
-              <h3 className="font-semibold text-black mb-2">Primary Green (#9BF00B)</h3>
-              <p className="text-black/80">This text should be clearly readable on the primary green background.</p>
-              <Button className="mt-2" color="green">Green Button</Button>
+            <div className="bg-[#0A1A3F] p-4 rounded-2xl">
+              <h3 className="font-semibold text-white mb-2">Primary Navy (#0A1A3F)</h3>
+              <p className="text-white/80">This text should be clearly readable on the primary navy background.</p>
+              <Button className="mt-2" color="navy">Navy Button</Button>
             </div>
-            <div className="bg-[#00E0FF] p-4 rounded-2xl">
-              <h3 className="font-semibold text-black mb-2">Accent Blue (#00E0FF)</h3>
-              <p className="text-black/80">This text should be clearly readable on the accent blue background.</p>
+            <div className="bg-[#007BFF] p-4 rounded-2xl">
+              <h3 className="font-semibold text-white mb-2">Electric Blue (#007BFF)</h3>
+              <p className="text-white/80">This text should be clearly readable on the electric blue background.</p>
               <Button className="mt-2" color="blue">Blue Button</Button>
             </div>
           </div>
@@ -89,10 +89,14 @@ export default function ContrastTestPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex flex-wrap gap-2">
-            <Button color="green">Primary Green</Button>
-            <Button color="blue">Primary Blue</Button>
-            <Button variant="outline" color="green">Outlined Green</Button>
+            <Button color="navy">Primary Navy</Button>
+            <Button color="blue">Electric Blue</Button>
+            <Button color="orange">Vibrant Orange</Button>
+            <Button color="red">Deep Red</Button>
+            <Button variant="outline" color="navy">Outlined Navy</Button>
             <Button variant="outline" color="blue">Outlined Blue</Button>
+            <Button variant="outline" color="orange">Outlined Orange</Button>
+            <Button variant="outline" color="red">Outlined Red</Button>
             <Button variant="ghost">Ghost Button</Button>
           </div>
         </CardContent>
@@ -105,8 +109,10 @@ export default function ContrastTestPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <a href="#" className="text-primary hover:underline block">Primary Link</a>
-            <a href="#" className="text-accent hover:underline block">Accent Link</a>
+            <a href="#" className="text-primary hover:underline block">Primary Navy Link</a>
+            <a href="#" className="text-accent hover:underline block">Electric Blue Link</a>
+            <a href="#" className="text-accent-2 hover:underline block">Vibrant Orange Link</a>
+            <a href="#" className="text-secondary hover:underline block">Deep Red Link</a>
             <button className="text-foreground hover:text-primary transition-colors">
               Interactive Text Button
             </button>

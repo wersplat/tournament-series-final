@@ -28,7 +28,7 @@ export function TeamCard6({
   return (
     <Card className="w-full overflow-hidden">
       <div className="relative">
-        <div className="relative isolate grid h-28 grid-cols-[120px_1fr] overflow-hidden rounded-t-2xl bg-[#9BF00B] @md:h-32 @md:grid-cols-[140px_1fr] @lg:h-36 @lg:grid-cols-[180px_1fr]">
+        <div className="relative isolate grid h-28 grid-cols-[120px_1fr] overflow-hidden rounded-t-2xl bg-[#0A1A3F] @md:h-32 @md:grid-cols-[140px_1fr] @lg:h-36 @lg:grid-cols-[180px_1fr]">
           <div className="flex items-center justify-center">
             {logoUrl ? (
               <Image

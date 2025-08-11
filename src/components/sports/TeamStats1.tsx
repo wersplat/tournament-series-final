@@ -40,14 +40,14 @@ export default function TeamStats1({ teamName, region }: { teamName?: string; re
 
   return (
     <div className="mx-auto w-full max-w-[1460px] px-5">
-              <div className="@container overflow-hidden rounded-3xl border border-custom-gray-200 bg-[#9BF00B] dark:border-custom-gray-600">
+              <div className="@container overflow-hidden rounded-3xl border border-custom-gray-200 bg-[#0A1A3F] dark:border-custom-gray-600">
           <div className="relative h-48 w-full @xl:h-[280px] @2xl:h-[360px]">
-            <div className="absolute inset-0 isolate overflow-hidden bg-[#9BF00B]">
+            <div className="absolute inset-0 isolate overflow-hidden bg-[#0A1A3F]">
             <svg
               viewBox="0 0 420 420"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className="absolute start-1/2 -bottom-5 h-40 w-40 -translate-x-1/2 text-[#9BF00B] [filter:drop-shadow(0_0_24px_#9BF00B)] @xl:h-64 @xl:w-64 @2xl:h-80 @2xl:w-80"
+              className="absolute start-1/2 -bottom-5 h-40 w-40 -translate-x-1/2 text-[#FF6B00] [filter:drop-shadow(0_0_24px_#FF6B00)] @xl:h-64 @xl:w-64 @2xl:h-80 @2xl:w-80"
             >
               <path
                 d="M201.646 416.137C144.946 389.951 97.469 343.545 60.543 278.221C30.33 224.771 13.58 169.737 4.849 132.979L0 112.558L20.478 108.517C29.676 106.701 36.353 98.519 36.353 89.064C36.353 87.535 36.171 85.986 35.811 84.46L31.579 64.862L68.813 56.045V18.129L83.947 14.518C125.355 4.884 167.706 0 210.202 0C252.699 0 294.762 4.884 336.17 14.518L351.208 18.129V56.045L388.444 64.862L384.015 84.461C383.657 85.986 383.572 87.538 383.572 89.064C383.572 98.519 390.297 106.701 399.497 108.517L420 112.558L415.161 132.981C406.428 169.739 389.684 224.774 359.473 278.221C322.549 343.545 275.075 389.95 218.367 416.141L210.01 420L201.646 416.137Z"
@@ -80,7 +80,7 @@ export default function TeamStats1({ teamName, region }: { teamName?: string; re
             viewBox="0 0 420 420"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="absolute start-1/2 -bottom-5 h-40 w-40 -translate-x-1/2 text-[#9BF00B] @xl:h-64 @xl:w-64 @2xl:h-80 @2xl:w-80"
+            className="absolute start-1/2 -bottom-5 h-40 w-40 -translate-x-1/2 text-[#FF6B00] @xl:h-64 @xl:w-64 @2xl:h-80 @2xl:w-80"
           >
             <path
               d="M201.646 416.137C144.946 389.951 97.469 343.545 60.543 278.221C30.33 224.771 13.58 169.737 4.849 132.979L0 112.558L20.478 108.517C29.676 106.701 36.353 98.519 36.353 89.064C36.353 87.535 36.171 85.986 35.811 84.46L31.579 64.862L68.813 56.045V18.129L83.947 14.518C125.355 4.884 167.706 0 210.202 0C252.699 0 294.762 4.884 336.17 14.518L351.208 18.129V56.045L388.444 64.862L384.015 84.461C383.657 85.986 383.572 87.538 383.572 89.064C383.572 98.519 390.297 106.701 399.497 108.517L420 112.558L415.161 132.981C406.428 169.739 389.684 224.774 359.473 278.221C322.549 343.545 275.075 389.95 218.367 416.141L210.01 420L201.646 416.137Z"

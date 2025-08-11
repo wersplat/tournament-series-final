@@ -19,8 +19,8 @@ const data: MatchItem[] = [
     id: 1,
     date: { day: 17, weekday: 'Wed' },
     teams: [
-              { name: 'Golden Team', abbr: 'GLD', color: { primary: 'text-[#9BF00B]' } },
-              { name: 'Emerald Team', abbr: 'EMR', color: { primary: 'text-[#00E0FF]' } },
+                      { name: 'Golden Team', abbr: 'GLD', color: { primary: 'text-[#FF6B00]' } },
+        { name: 'Emerald Team', abbr: 'EMR', color: { primary: 'text-[#007BFF]' } },
     ],
     venue: { name: 'Boiling Rock Arena' },
     league: 'SportyBlocks League',
