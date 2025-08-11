@@ -29,13 +29,54 @@ export default async function LoginPage({ searchParams }: { searchParams: Search
       <CardContent className="p-6">
         <h1 className="text-xl font-semibold mb-4">Sign in</h1>
         <form className="space-y-3" action="/auth/signin/password" method="post">
-          <Input name="email" type="email" placeholder="you@example.com" required />
-          <Input name="password" type="password" placeholder="Your password" required />
+          <div>
+            <label htmlFor="email-password" className="block text-sm font-medium mb-1">
+              Email address
+            </label>
+            <Input 
+              id="email-password"
+              name="email" 
+              type="email" 
+              placeholder="you@example.com" 
+              required 
+              aria-describedby="email-password-help"
+            />
+            <p id="email-password-help" className="text-xs text-muted-foreground mt-1">
+              Enter your email address to sign in with password
+            </p>
+          </div>
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium mb-1">
+              Password
+            </label>
+            <Input 
+              id="password"
+              name="password" 
+              type="password" 
+              placeholder="Your password" 
+              required 
+            />
+          </div>
           <Button type="submit" className="w-full">Sign in</Button>
         </form>
         <div className="h-px bg-border my-4" />
         <form className="space-y-3" action="/auth/signin/email" method="post">
-          <Input name="email" type="email" placeholder="you@example.com" required />
+          <div>
+            <label htmlFor="email-magic" className="block text-sm font-medium mb-1">
+              Email address
+            </label>
+            <Input 
+              id="email-magic"
+              name="email" 
+              type="email" 
+              placeholder="you@example.com" 
+              required 
+              aria-describedby="email-magic-help"
+            />
+            <p id="email-magic-help" className="text-xs text-muted-foreground mt-1">
+              Enter your email to receive a magic link
+            </p>
+          </div>
           <Button type="submit" variant="outline" className="w-full">Send magic link</Button>
         </form>
         <div className="h-px bg-border my-4" />

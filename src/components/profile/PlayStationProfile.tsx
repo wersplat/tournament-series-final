@@ -49,9 +49,10 @@ export function PlayStationProfile({ gamertag, username, avatarUrl, averages, st
           <div className="font-medium">Level {starsLevel}</div>
           <div className="text-muted-foreground">{Intl.NumberFormat().format(starsPoints)} Points</div>
         </div>
-        <div className="mt-2 h-2 rounded-full bg-border">
+        <div className="mt-2 h-2 rounded-full bg-border" role="progressbar" aria-valuenow={40} aria-valuemin={0} aria-valuemax={100} aria-label={`Level ${starsLevel} progress`}>
           <div className="h-2 rounded-full bg-primary" style={{ width: '40%' }} />
         </div>
+        <p className="sr-only">Level {starsLevel} progress: 40% complete</p>
       </div>
     </div>
   )

@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { getSchedule, getMedia, getTeams } from '@/lib/api/public'
+import MatchSchedule6 from '@/components/sports/MatchSchedule6'
+import TeamCard6 from '@/components/sports/TeamCard6'
 
 export default async function LandingPage() {
   const [schedule, media, teams] = await Promise.all([getSchedule(), getMedia(), getTeams()])
@@ -23,43 +25,38 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {([
-          { href: '/schedule', title: 'Schedule' },
-          { href: '/rankings', title: 'Rankings' },
-          { href: '/events', title: 'Events' },
-          { href: '/teams', title: 'Teams' },
-          { href: '/players', title: 'Players' },
-          { href: '/standings', title: 'Standings' },
-          { href: '/media', title: 'Media' },
-        ] as const).map((t) => (
-          <Link key={t.href} href={t.href as any} className="focus-ring">
-            <Card>
-              <CardContent>
-                <div className="text-xl font-semibold">{t.title}</div>
-                <div className="text-xs text-muted-foreground">Explore {t.title.toLowerCase()}</div>
-              </CardContent>
-            </Card>
-          </Link>
-        ))}
+      <section>
+        <h2 className="text-xl font-semibold mb-3">Featured Teams</h2>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {teams.slice(0, 8).map((team) => (
+            <Link key={team.id} href={`/teams/${team.id}`} className="focus-ring">
+              <TeamCard6
+                name={team.name}
+                region={team.region}
+                logoUrl={team.logo_url || undefined}
+                stats={{ 
+                  wins: (team as any).wins ?? null, 
+                  losses: (team as any).losses ?? null, 
+                  games: (team as any).games_played ?? null 
+                }}
+              />
+            </Link>
+          ))}
+        </div>
       </section>
 
       <section>
-        <h2 className="text-xl font-semibold mb-3">Upcoming</h2>
-        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-          {schedule.map((m) => (
-            <Card key={m.id}>
-              <CardHeader>
-                <CardTitle>
-                  {(m.home_team_name || teamName[m.home_team_id] || m.home_team_id)} vs {(m.away_team_name || teamName[m.away_team_id] || m.away_team_id)}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="text-muted-foreground">
-                {new Date(m.scheduled_at).toLocaleString()} — {m.status}
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <h2 className="text-xl font-semibold mb-3">Upcoming Matches</h2>
+        <MatchSchedule6 
+          matches={schedule.map((m) => ({
+            id: m.id,
+            date: new Date(m.scheduled_at),
+            teamA: { name: m.home_team_name || teamName[m.home_team_id] || m.home_team_id },
+            teamB: { name: m.away_team_name || teamName[m.away_team_id] || m.away_team_id },
+            league: m.status,
+            timeLabel: new Date(m.scheduled_at).toLocaleTimeString(),
+          }))} 
+        />
       </section>
 
       <section>

@@ -15,7 +15,22 @@ export default async function TeamsPage({ searchParams }: { searchParams: Promis
     <div className="space-y-4">
       <h1 className="text-xl font-semibold">Teams</h1>
       <form action="" className="flex gap-2">
-        <Input name="q" defaultValue={q || ''} placeholder="Search teams…" className="max-w-md" />
+        <div className="flex-1 max-w-md">
+          <label htmlFor="team-search" className="sr-only">
+            Search teams
+          </label>
+          <Input 
+            id="team-search"
+            name="q" 
+            defaultValue={q || ''} 
+            placeholder="Search teams…" 
+            className="w-full"
+            aria-describedby="team-search-help"
+          />
+          <p id="team-search-help" className="sr-only">
+            Enter team name or region to filter the list
+          </p>
+        </div>
       </form>
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {filtered.map((t) => (
