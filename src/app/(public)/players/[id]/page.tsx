@@ -1,9 +1,8 @@
 import PlayerStats5 from '@/components/sports/PlayerStats5'
 import PlayerMatchHistory from '@/components/sports/PlayerMatchHistory'
 import MatchSchedule6 from '@/components/sports/MatchSchedule6'
+import PlayerProfile from '@/components/sports/PlayerProfile'
 import { getPlayerProfile } from '@/lib/api/public'
-import { PlayStationProfile } from '@/components/profile/PlayStationProfile'
-import { XboxProfile } from '@/components/profile/XboxProfile'
 import { Card, CardContent } from '@/components/ui/card'
 
 type Params = Promise<{ id: string }>
@@ -48,11 +47,12 @@ export default async function PlayerProfilePage({ params }: { params: Params }) 
         </CardContent>
       </Card>
 
-      {/* Profile Cards */}
-      <div className="grid gap-4 lg:grid-cols-2">
-        <PlayStationProfile gamertag={bundle.player.gamertag} username={bundle.player.id} averages={averages} />
-        <XboxProfile gamertag={bundle.player.gamertag} username={bundle.player.id} />
-      </div>
+      {/* Player Profile */}
+      <PlayerProfile 
+        gamertag={bundle.player.gamertag} 
+        username={bundle.player.id} 
+        averages={averages} 
+      />
 
       {/* Stats and Schedule */}
       <div className="grid gap-6 lg:grid-cols-2">

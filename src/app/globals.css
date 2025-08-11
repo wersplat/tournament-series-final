@@ -4,7 +4,7 @@
 @layer utilities {
   .prose-base {
     @apply prose max-w-none;
-    /* Tie prose colors to theme tokens so it adapts on Xbox (dark) and PlayStation (light) */
+    /* Tie prose colors to theme tokens */
     --tw-prose-body: hsl(var(--foreground));
     --tw-prose-headings: hsl(var(--foreground));
     --tw-prose-links: hsl(var(--primary));
@@ -33,7 +33,6 @@
   --popover-foreground: 0 0% 98%;
   --card: 240 10% 6%;
   --card-foreground: 0 0% 98%;
-  /* Increase border contrast on Xbox theme */
   --border: 240 7% 38%;
   --input: 240 3.7% 15.9%;
   --primary: 220 75% 15%; /* #0A1A3F - Primary Navy */
@@ -57,36 +56,7 @@
   --radius: 1rem; /* rounded-2xl vibe */
 }
 
-/* PlayStation Light theme */
-[data-theme="playstation"] {
-  --background: 0 0% 100%;
-  --foreground: 231 15% 12%;
-  --muted: 210 20% 96%;
-  --muted-foreground: 231 15% 32%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 231 15% 12%;
-  --card: 0 0% 100%;
-  --card-foreground: 231 15% 12%;
-  --border: 220 14% 90%;
-  --input: 220 14% 90%;
-  --primary: 220 75% 15%; /* #0A1A3F - Primary Navy */
-  --primary-foreground: 0 0% 100%;
-  --secondary: 350 70% 40%; /* #A51E2C - Deep Red */
-  --secondary-foreground: 0 0% 100%;
-  --accent: 210 100% 50%; /* #007BFF - Electric Blue */
-  --accent-foreground: 0 0% 100%;
-  --accent-2: 25 100% 50%; /* #FF6B00 - Vibrant Orange */
-  --accent-2-foreground: 0 0% 100%;
-  --success: 142 76% 47%; /* #28C76F - Success Green */
-  --success-foreground: 0 0% 100%;
-  --error: 0 77% 56%; /* #E63946 - Error Red */
-  --error-foreground: 0 0% 100%;
-  --neutral-light: 220 20% 96%; /* #F4F6FA - Neutral Light */
-  --neutral-mid: 220 10% 82%; /* #C5C9D3 - Neutral Mid */
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 0 0% 100%;
-  --ring: 220 75% 15%;
-}
+
 
 body {
   @apply bg-background text-foreground antialiased;
