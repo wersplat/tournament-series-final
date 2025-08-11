@@ -16,9 +16,11 @@ export default async function AdminDashboard() {
           ['Review', '/admin/review'],
         ].map(([label, href]) => (
           <a key={href} href={href} className="focus-ring">
-            <div className="rounded-2xl border border-border ring-1 ring-transparent dark:ring-white/10 p-4 bg-card">
-              <div className="font-medium">{label}</div>
-              <div className="text-xs text-muted-foreground">Manage {label.toLowerCase()}</div>
+            <div className="rounded-2xl border border-border ring-1 ring-transparent dark:ring-white/10 bg-card">
+              <div className="p-4">
+                <div className="font-medium">{label}</div>
+                <div className="text-xs text-muted-foreground">Manage {label.toLowerCase()}</div>
+              </div>
             </div>
           </a>
         ))}

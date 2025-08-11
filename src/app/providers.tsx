@@ -12,6 +12,8 @@ export function Providers({ children }: { children: ReactNode }) {
           defaultProps: {
             className:
               'rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+            color: 'green',
+            variant: 'filled',
           },
         },
         card: {

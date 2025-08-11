@@ -26,15 +26,15 @@
 /* Theme tokens via CSS variables: Xbox Dark (default) */
 :root {
   --background: 240 6% 4%; /* #0b0b0c approx */
-  --foreground: 0 0% 98%;
+  --foreground: 0 0% 96%; /* slightly dim to reduce glare */
   --muted: 240 4.8% 16.1%;
-  --muted-foreground: 240 5% 64.9%;
+  --muted-foreground: 240 6% 72%; /* increase contrast on dark */
   --popover: 240 10% 3.9%;
   --popover-foreground: 0 0% 98%;
   --card: 240 10% 6%;
   --card-foreground: 0 0% 98%;
   /* Increase border contrast on Xbox theme */
-  --border: 240 6% 35%;
+  --border: 240 7% 38%;
   --input: 240 3.7% 15.9%;
   --primary: 97 100% 50%; /* #9BF00B */
   --primary-foreground: 240 10% 3.9%;
