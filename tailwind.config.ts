@@ -54,6 +54,14 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        "team-golden": {
+          primary: "#FF9000",
+          secondary: "#FFB347",
+        },
+        "team-emerald": {
+          primary: "#00E0FF",
+          secondary: "#33E6FF",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
