@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { getPlayers } from '@/lib/api/public'
 import { Input } from '@/components/ui/input'
+import PlayerCard5 from '@/components/sports/PlayerCard5'
 export const revalidate = 120
 
 export default async function PlayersPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
@@ -20,9 +21,8 @@ export default async function PlayersPage({ searchParams }: { searchParams: Prom
       </form>
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {filtered.map((p) => (
-          <Link key={p.id} href={`/players/${p.id}`} className="tile p-4 focus-ring">
-            <div className="font-medium">{p.gamertag}</div>
-            <div className="text-xs text-muted-foreground">{p.role || '—'}</div>
+          <Link key={p.id} href={`/players/${p.id}`} className="focus-ring block">
+            <PlayerCard5 gamertag={p.gamertag} role={p.role} avatarUrl={p.avatar_url || undefined} />
           </Link>
         ))}
         {filtered.length === 0 && (
