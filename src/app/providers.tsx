@@ -15,6 +15,47 @@ export function Providers({ children }: { children: ReactNode }) {
             color: 'green',
             variant: 'filled',
           },
+          styles: {
+            base: {
+              initial: {
+                textTransform: 'normal',
+              },
+            },
+            variants: {
+              filled: {
+                green: {
+                  background: 'bg-[#9BF00B]',
+                  color: 'text-black',
+                  '&:hover': {
+                    background: 'bg-[#8AE00A]',
+                  },
+                },
+                blue: {
+                  background: 'bg-[#00E0FF]',
+                  color: 'text-black',
+                  '&:hover': {
+                    background: 'bg-[#00C8E6]',
+                  },
+                },
+              },
+              outlined: {
+                green: {
+                  border: 'border border-[#9BF00B]',
+                  color: 'text-[#9BF00B]',
+                  '&:hover': {
+                    background: 'bg-[#9BF00B]/10',
+                  },
+                },
+                blue: {
+                  border: 'border border-[#00E0FF]',
+                  color: 'text-[#00E0FF]',
+                  '&:hover': {
+                    background: 'bg-[#00E0FF]/10',
+                  },
+                },
+              },
+            },
+          },
         },
         card: {
           defaultProps: {

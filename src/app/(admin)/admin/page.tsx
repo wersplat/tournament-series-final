@@ -1,4 +1,5 @@
 import { requireAdmin } from '@/lib/auth'
+import { Card, CardContent } from '@/components/ui/card'
 
 export default async function AdminDashboard() {
   const can = await requireAdmin()
@@ -16,12 +17,12 @@ export default async function AdminDashboard() {
           ['Review', '/admin/review'],
         ].map(([label, href]) => (
           <a key={href} href={href} className="focus-ring">
-            <div className="rounded-2xl border border-border ring-1 ring-transparent dark:ring-white/10 bg-card">
-              <div className="p-4">
+            <Card>
+              <CardContent>
                 <div className="font-medium">{label}</div>
                 <div className="text-xs text-muted-foreground">Manage {label.toLowerCase()}</div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </a>
         ))}
       </div>
