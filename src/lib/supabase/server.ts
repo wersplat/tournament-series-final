@@ -24,7 +24,7 @@ export function supabaseServer() {
     async remove(name: string, options?: CookieOptions & { name?: string }) {
       try {
         const store = await cookies()
-        store.set({ name, value: '', ...options })
+        store.set({ name, value: '', ...options, maxAge: 0 })
       } catch {
         // ignore during RSC render
       }

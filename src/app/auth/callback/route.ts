@@ -12,16 +12,10 @@ export async function GET(req: NextRequest) {
     const supabase = supabaseServer()
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) {
-      const forwardedHost = req.headers.get('x-forwarded-host')
-      const rawSite = process.env.NEXT_PUBLIC_SITE_URL || ''
-      const siteUrl = rawSite ? (rawSite.startsWith('http') ? rawSite : `https://${rawSite}`) : null
-      if (forwardedHost && process.env.NODE_ENV === 'production') {
-        return NextResponse.redirect(`https://${forwardedHost}${next}`)
-      }
-      if (siteUrl) {
-        return NextResponse.redirect(new URL(next, siteUrl))
-      }
-      return NextResponse.redirect(`${url.origin}${next}`)
+      const forwardedHost = req.headers.get('x-forwarded-host') || url.host
+      const forwardedProto = req.headers.get('x-forwarded-proto') || url.protocol.replace(':', '')
+      const origin = `${forwardedProto}://${forwardedHost}`
+      return NextResponse.redirect(`${origin}${next}`)
     }
   }
 

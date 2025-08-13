@@ -6,12 +6,17 @@ export async function POST(req: NextRequest) {
   const provider = String(form.get('provider') || '') as 'google' | 'discord' | 'twitter'
 
   const supabase = supabaseServer()
-  const rawSite = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-  const siteUrl = rawSite.startsWith('http') ? rawSite : `https://${rawSite}`
+
+  const forwardedHost = req.headers.get('x-forwarded-host')
+  const forwardedProto = req.headers.get('x-forwarded-proto')
+  const url = new URL(req.url)
+  const proto = forwardedProto || (process.env.NODE_ENV === 'production' ? 'https' : url.protocol.replace(':', ''))
+  const host = forwardedHost || url.host
+  const origin = `${proto}://${host}`
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider,
-    options: { redirectTo: `${siteUrl}/auth/callback` }
+    options: { redirectTo: `${origin}/auth/callback` }
   })
   if (error || !data?.url) {
     return NextResponse.json({ error: error?.message ?? 'No auth URL' }, { status: 400 })

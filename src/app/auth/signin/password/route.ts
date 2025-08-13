@@ -14,9 +14,13 @@ export async function POST(req: NextRequest) {
   const supabase = supabaseServer()
   const { error } = await supabase.auth.signInWithPassword({ email, password })
   if (error) return NextResponse.json({ error: error.message }, { status: 400 })
-  const rawSite = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-  const siteUrl = rawSite.startsWith('http') ? rawSite : `https://${rawSite}`
-  return NextResponse.redirect(new URL(next || '/', siteUrl))
+  const forwardedHost = req.headers.get('x-forwarded-host')
+  const forwardedProto = req.headers.get('x-forwarded-proto')
+  const url = new URL(req.url)
+  const proto = forwardedProto || (process.env.NODE_ENV === 'production' ? 'https' : url.protocol.replace(':', ''))
+  const host = forwardedHost || url.host
+  const origin = `${proto}://${host}`
+  return NextResponse.redirect(new URL(next || '/', origin))
 }
 
 
